@@ -18,8 +18,12 @@ export class ConfigurationsCardComponent implements OnInit {
 
     navigateToForm() {
         switch (this.configurationName) {
-            case "Client": this.router.navigate(['client-form'], { relativeTo: this.route });
+            case "Client": this.router.navigate(['client-form'], { relativeTo: this.route })
+                break;
             case "Premise": this.router.navigate(['premise-form'], { relativeTo: this.route })
+                break;
+            case "Premise Manager": this.router.navigate(['new-premise-manager'], { relativeTo: this.route })
+                break;
         }
     }
 

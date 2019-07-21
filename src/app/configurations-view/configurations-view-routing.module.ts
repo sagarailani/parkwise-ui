@@ -4,6 +4,7 @@ import { ConfigurationsViewComponent } from './configurations-view.component';
 import { ConfigurationsContainerComponent } from './configurations-container/configurations-container.component';
 import { NewClientFormComponent } from './new-client-form/new-client-form.component';
 import { NewPremiseFormComponent } from './new-premise-form/new-premise-form.component';
+import { NewPremiseManagerFormComponent } from './new-premise-manager-form/new-premise-manager-form.component';
 
 const routes: Routes = [
     {
@@ -15,9 +16,11 @@ const routes: Routes = [
                 path: 'client-form', component: NewClientFormComponent,
             },
             {
-                path: 'premise-form', component: NewPremiseFormComponent,
+                path: 'premise-form', component: NewPremiseFormComponent
             },
-
+            {
+                path: 'new-premise-manager', component: NewPremiseManagerFormComponent
+            }
         ]
     },
 

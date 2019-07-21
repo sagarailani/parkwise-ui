@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GateWorkerViewModule } from './gate-worker-view/gate-worker-view.module';
 import { ConfigurationsViewModule } from './configurations-view/configurations-view.module';
+import { NewPremiseFormModule } from './configurations-view/new-premise-form/new-premise-form.module';
 
 @NgModule({
     declarations: [

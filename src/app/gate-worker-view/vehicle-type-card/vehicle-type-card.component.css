@@ -1,0 +1,24 @@
+.card {
+    width: 95%;
+    margin: auto;    
+    background-color: #ffffffff;
+    color: black;
+    border-top: 1px solid rgb(224, 224, 224);
+    border-left: 1px solid rgb(224, 224, 224);
+    border-right: 1px solid rgb(224, 224, 224);
+    border-bottom: 0;
+    /* border: 1px solid rgb(202, 201, 201);  */
+    font-weight: bolder;
+    line-height: 4em;
+}
+.content {
+    vertical-align: middle;
+    width: inherit;    
+    align-self: center;
+}
+
+.entry-form {        
+    width: 100%;
+    margin: auto;
+    background-color: white;
+}

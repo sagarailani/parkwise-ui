@@ -1,0 +1,17 @@
+.card {
+    width: 70%;
+    margin: auto;
+    background-color: black;
+    color: white;
+    font-weight: bolder;
+    line-height: 4em;
+    cursor: pointer;
+}
+.content {
+    vertical-align: middle;
+    width: inherit;    
+    align-self: center;
+}
+a {
+    text-decoration: none;
+}

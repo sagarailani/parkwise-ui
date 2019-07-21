@@ -1,0 +1,9 @@
+<form [formGroup]="dataEntryForm" (ngSubmit)="saveVehicleNumber()">
+    <div class="user-input-wrap">
+        <input type="text" class="form-control" placeholder="vehicle number" formControlName="vehicleNumber">
+        <div class="valet-holder" *ngIf="enableValet === true">
+            <input type="checkbox" formControlName="valetOption"><span>Use Valet</span>
+        </div>
+        <input type="submit">
+    </div>
+</form>

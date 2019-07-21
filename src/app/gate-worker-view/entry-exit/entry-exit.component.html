@@ -1,0 +1,16 @@
+<div class="card entry-card">
+    <div (click)="showEntryTypeConfigurations()">
+        <span class="content">{{type}}</span>
+    </div>
+</div>
+<div *ngIf="areConfigurationsAvailable === true">
+    <div *ngFor="let configuration of configurations">
+        <div *ngIf="showConfigurations === true" [@slideUpDown]>
+            <app-entry-type-card [entryName]="configuration.entryName" [vehicleTypes]="configuration.vehicleTypes">
+            </app-entry-type-card>
+        </div>
+    </div>
+</div>
+<div *ngIf="areConfigurationsAvailable === false && showConfigurations === true" [@slideUpDown]>
+    <app-data-entry-form [enableValet]="false"></app-data-entry-form>
+</div>

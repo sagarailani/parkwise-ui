@@ -1,0 +1,13 @@
+.card {
+    width: 95%;
+    margin: auto;    
+    background-color: rgba(44, 41, 41, 0.445);
+    color: black;
+    font-weight: bolder;
+    line-height: 4em;
+}
+.content {
+    vertical-align: middle;
+    width: inherit;    
+    align-self: center;
+}

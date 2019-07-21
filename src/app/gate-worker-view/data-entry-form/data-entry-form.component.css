@@ -1,0 +1,22 @@
+.form-control {
+    background-color: inherit;
+    color: black;
+    font-size: 1.5em;    
+    text-align: center; 
+    border: none;    
+}
+.user-input-wrap {    
+    width: 95%;
+    margin: auto;
+    border-bottom: 1px solid rgb(224, 224, 224);    
+    border-left: 1px solid rgb(224, 224, 224);  
+    border-right: 1px solid rgb(224, 224, 224);    
+}
+
+.valet-holder {
+    margin-top: 1em;
+}
+
+.valet-holder span {
+    margin-left: 1em;
+}

@@ -1,0 +1,7 @@
+<div class="card" (click)="showForm()">
+    <span class="content">{{type}}</span>
+</div>
+<div class="entry-form" *ngIf="isShowForm === true" [@slideUpDown]>
+    <app-data-entry-form [enableValet]="valetAvailable" [vehicleType]="type">
+    </app-data-entry-form>
+</div>

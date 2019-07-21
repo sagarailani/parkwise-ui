@@ -1,0 +1,11 @@
+<div class="card entry-card">
+    <div (click)="showVehicleType()">
+        <span class="content">{{entryName}}</span>
+    </div>
+</div>
+<div *ngFor="let type of vehicleTypes">
+    <div *ngIf="isShowVehicleTypeEnabled === true" [@slideUpDown]>
+        <app-vehicle-type-card [type]="type.vehicleType" [valetAvailable]="type.valet">
+        </app-vehicle-type-card>
+    </div>
+</div>

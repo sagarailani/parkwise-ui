@@ -1,0 +1,19 @@
+.container {
+    margin-top: 1em;
+}
+.label-text {
+    margin: auto;
+    text-align: center;
+}
+.card-container {
+    margin: auto;
+    margin-top: 2em;
+    text-align: center;
+}
+a {
+    text-decoration: black;
+    color: black;
+}
+.config-headers {
+    margin-top: 1em;
+}

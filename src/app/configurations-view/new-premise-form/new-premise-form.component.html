@@ -19,21 +19,21 @@
                 formControlName="premiseName">
         </div>
 
-        <div>
-            <label for="entryTypeInline">Entry Type</label>
-            <div id="entryTypeInline" class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="regular"
+        <div class="entry-type">
+            <label class="">Entry Type: </label><br />
+            <div class="entry-type form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="regularEntry" value="regular"
                     formControlName="entryTypeRegular">
-                <label class="form-check-label" for="inlineCheckbox1">Regular</label>
+                <label class="form-check-label" for="regularEntry">Regular</label>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="temporary"
+            <div class="entry-type form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="tempEntry" value="temporary"
                     formControlName="entryTypeTemporary">
-                <label class="form-check-label" for="inlineCheckbox2">Temporary</label>
+                <label class="form-check-label" for="tempEntry">Temporary</label>
             </div>
         </div>
 
-        <div>
+        <div class="entryTypeDetails">
             <div formGroupName="entryTypeRegularForm"
                 *ngIf="newPremiseDataInputForm.controls.entryTypeRegular.value === true" class="regular-form">
 
@@ -117,7 +117,6 @@
 
 
             </div>
-
 
             <div formGroupName="entryTypeTemporaryForm"
                 *ngIf="newPremiseDataInputForm.controls.entryTypeTemporary.value === true">

@@ -51,7 +51,7 @@ export class NewPremiseFormComponent implements OnInit {
     }
 
     savePremiseData() {
-        console.log(this.newPremiseDataInputForm)
+        console.log(this.newPremiseDataInputForm.value)
     }
 
 }

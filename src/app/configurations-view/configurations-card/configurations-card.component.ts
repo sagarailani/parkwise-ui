@@ -24,6 +24,17 @@ export class ConfigurationsCardComponent implements OnInit {
                 break;
             case "Premise Manager": this.router.navigate(['new-premise-manager'], { relativeTo: this.route })
                 break;
+            case "Gate Worker": this.router.navigate(['new-gate-worker'], { relativeTo: this.route })
+                break;
+            case "Pricing Strategy": this.router.navigate(['pricing'], { relativeTo: this.route })
+                break;
+            case "Premise Configuration": this.router.navigate(['update-premise-configuration'], { relativeTo: this.route })
+                break;
+            case "Generate Pass": this.router.navigate(['generate-pass'], { relativeTo: this.route })
+                break;
+            case "Gate Configuration": this.router.navigate(['gate-config'], { relativeTo: this.route })
+                break;
+
         }
     }
 

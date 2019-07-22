@@ -1,0 +1,47 @@
+<div class="container">
+
+    <h3>Generate Customer Pass</h3>
+    <hr />
+
+    <form [formGroup]="generatePassForm" class="form-content" (ngSubmit)="savePassData()">
+
+        <div class="form-group">
+            <label>Client Username: </label><br>
+            <select class="custom-select col-sm-6" formControlName="clientUsername">
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.clientName}}
+                </option>
+            </select>
+            <!-- <small id="usernameHelp" class="form-text text-muted">Select Client Username to </small> -->
+        </div>
+
+        <div class="form-group">
+            <label>Premise Name: </label><br>
+            <select class="custom-select col-sm-6" formControlName="premiseName">
+                <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
+                    {{premise.premiseName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Vehicle Types: </label><br>
+            <select class="custom-select col-sm-6" formControlName="vehicleType">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Pass Types: </label><br>
+            <select class="custom-select col-sm-6" formControlName="passType">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="vehicleNumber">Vehicle Number: </label>
+            <input type="text" class="form-control col-sm-6" id="managerName" placeholder="Enter Vehicle Number"
+                formControlName="vehicleNumber">
+        </div>
+
+        <input type="submit" class="btn btn-dark" value="Generate">
+    </form>
+</div>

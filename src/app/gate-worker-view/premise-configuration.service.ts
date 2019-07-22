@@ -18,7 +18,7 @@ export class PremiseConfigurationService {
                 {
                     'vehicleType': '4 wheeler',
                     'slots': 10,
-                    'valet': true
+                    'valet': false
                 }
             ]
         },

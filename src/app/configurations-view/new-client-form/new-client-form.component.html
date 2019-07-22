@@ -4,20 +4,43 @@
     <hr />
 
     <form [formGroup]="clientDataInputForm" class="form-content" (ngSubmit)="saveClientData()">
-        <div class="form-group">
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.clientName}">
+
             <label for="clientName">Client Name: </label>
             <input type="text" class="form-control col-sm-6" id="clientName" placeholder="enter client name"
-                formControlName="clientName">
+                formControlName="clientName" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientName">
+                {{formErrors.clientName}}
+            </div>
+
         </div>
+
         <div class="form-group">
+
             <label for="username">Username: </label>
             <input type="text" class="form-control col-sm-6" id="username" placeholder="enter username"
-                formControlName="username">
-            <!-- <small id="usernameHelp" class="form-text text-muted">{{}}</small> -->
+                formControlName="username" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.username">
+                {{formErrors.username}}
+            </div>
+
         </div>
-        <!-- <div class="form-group">
-        <input type="checkbox" class="form-control" formControlName="addPremiseFlag">
-    </div> -->
-        <input type="submit" class="btn btn-dark">
+
+        <div class="form-group">
+
+            <label for="password">Password: </label>
+            <input type="password" class="form-control col-sm-6" id="password" placeholder="enter password"
+                formControlName="password" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.password">
+                {{formErrors.password}}
+            </div>
+
+        </div>
+
+        <input type="submit" class="btn btn-dark" [disabled]="clientDataInputForm.invalid">
     </form>
 </div>

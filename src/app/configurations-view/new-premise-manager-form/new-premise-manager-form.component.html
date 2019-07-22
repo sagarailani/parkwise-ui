@@ -7,39 +7,51 @@
 
         <div class="form-group">
             <label>Client Username: </label><br>
-            <select class="custom-select col-sm-6" formControlName="clientUsername">
+            <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
                     {{client.clientName}}
                 </option>
             </select>
-            <!-- <small id="usernameHelp" class="form-text text-muted">Select Client Username to </small> -->
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
+                {{formErrors.clientUsername}}
+            </div>
+
         </div>
 
         <div class="form-group">
             <label>Premise Name: </label><br>
-            <select class="custom-select col-sm-6" formControlName="premiseName">
+            <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
                 <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
                     {{premise.premiseName}}
                 </option>
             </select>
-        </div>
 
-        <div class="form-group">
-            <label for="managerName">Manager Name: </label>
-            <input type="text" class="form-control col-sm-6" id="managerName" placeholder="Enter Name"
-                formControlName="name">
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
+                {{formErrors.premiseName}}
+            </div>
         </div>
 
         <div class="form-group">
             <label for="managerUsername">Manager Username: </label>
             <input type="text" class="form-control col-sm-6" id="managerUsername" placeholder="Enter Username"
-                formControlName="username">
+                formControlName="username" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.username">
+                {{formErrors.username}}
+            </div>
+
         </div>
 
         <div class="form-group">
             <label for="managerPassword">Manager Password: </label>
             <input type="password" class="form-control col-sm-6" id="managerPassword" placeholder="Enter Password"
-                formControlName="password">
+                formControlName="password" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.password">
+                {{formErrors.password}}
+            </div>
+
         </div>
 
         <input type="submit" class="btn btn-dark">

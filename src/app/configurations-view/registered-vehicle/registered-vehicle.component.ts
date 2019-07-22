@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ClientPremiseService } from '../client-premise.service';
 
 @Component({
@@ -21,26 +20,50 @@ export class RegisteredVehicleComponent implements OnInit {
         "Bus",
     ]
 
+    validationMessages = {
+        'clientUsername': {
+            'required': 'Client Username is required',
+        },
+        'premiseName': {
+            'required': 'Premise Name is required',
+        },
+        'vehicleType': {
+            'required': 'Vehicle Type is required',
+        },
+        'vehicleNumber': {
+            'required': 'Vehicle Number is required',
+        },
+    }
+
+    formErrors = {
+        'clientUsername': '',
+        'premiseName': '',
+        'vehicleType': '',
+        'vehicleNumber': '',
+    }
+
+
     constructor(private fb: FormBuilder, private clientPremiseService
         : ClientPremiseService) { }
 
     ngOnInit() {
         this.registerVehicleForm = this.fb.group({
-            clientName: [''],
-            premiseName: [''],
-            vehicleType: [''],
-            vehicleNumber: [''],
+            clientUsername: ['', Validators.required],
+            premiseName: ['', Validators.required],
+            vehicleType: ['', Validators.required],
+            vehicleNumber: ['', Validators.required],
         })
         console.log(this.clients);
 
         this.getClients();
-        this.registerVehicleForm.controls.clientName.valueChanges.subscribe(clientId => {
-            console.log("Printing clientId: " + clientId);
+        this.registerVehicleForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             this.clientPremiseService.getPremiseForClient(clientId)
                 .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
-                ;
         });
+
+        this.registerVehicleForm.valueChanges.subscribe((value) => {
+            this.logValidationErrors();
+        })
     }
 
     getClients() {
@@ -48,7 +71,32 @@ export class RegisteredVehicleComponent implements OnInit {
             .subscribe(clients => this.clients = clients)
     }
 
-    register() {
-        console.log(this.registerVehicleForm.value);
+    saveRegisteredVehicleData() {
+
     }
+
+    logValidationErrors(group: FormGroup = this.registerVehicleForm) {
+        Object.keys(group.controls).forEach((key: string) => {
+            const abstractControl = group.get(key);
+            if (abstractControl instanceof FormGroup) {
+                this.logValidationErrors(abstractControl)
+            } else {
+                if (abstractControl && abstractControl.invalid && (
+                    abstractControl.touched || abstractControl.dirty
+                )) {
+                    this.formErrors[key] = ""
+                    const messages = this.validationMessages[key];
+                    console.log(key + " : " + messages)
+                    for (const error in abstractControl.errors) {
+                        if (error) {
+                            this.formErrors[key] += messages[error];
+                        }
+                    }
+                } else {
+                    this.formErrors[key] = "";
+                }
+            }
+        })
+    }
+
 }

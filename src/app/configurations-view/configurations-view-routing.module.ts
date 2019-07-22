@@ -10,6 +10,7 @@ import { NewGateWorkerFormComponent } from './new-gate-worker-form/new-gate-work
 import { UpdatePremiseConfigurationFormComponent } from './update-premise-configuration-form/update-premise-configuration-form.component';
 import { GeneratePassFormComponent } from './generate-pass-form/generate-pass-form.component';
 import { GateFormComponent } from './gate-form/gate-form.component';
+import { RegisteredVehicleComponent } from './registered-vehicle/registered-vehicle.component';
 
 const routes: Routes = [
     {
@@ -49,6 +50,10 @@ const routes: Routes = [
             {
                 path: 'gate-config',
                 component: GateFormComponent
+            },
+            {
+                path: 'registered-vehicle',
+                component: RegisteredVehicleComponent
             }
         ]
     },

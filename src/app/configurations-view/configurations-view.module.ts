@@ -10,9 +10,11 @@ import { NewClientFormComponent } from './new-client-form/new-client-form.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { NewPremiseFormComponent } from './new-premise-form/new-premise-form.component';
 import { NewPremiseManagerFormComponent } from './new-premise-manager-form/new-premise-manager-form.component';
+import { PricingFormComponent } from './pricing-form/pricing-form.component';
+import { NewGateWorkerFormComponent } from './new-gate-worker-form/new-gate-worker-form.component';
 
 @NgModule({
-    declarations: [ConfigurationsViewComponent, TitleBarComponent, ConfigurationsContainerComponent, ConfigurationsCardComponent, NewClientFormComponent, NewPremiseFormComponent, NewPremiseManagerFormComponent],
+    declarations: [ConfigurationsViewComponent, TitleBarComponent, ConfigurationsContainerComponent, ConfigurationsCardComponent, NewClientFormComponent, NewPremiseFormComponent, NewPremiseManagerFormComponent, PricingFormComponent, NewGateWorkerFormComponent],
     imports: [
         CommonModule,
         ConfigurationsViewRoutingModule,

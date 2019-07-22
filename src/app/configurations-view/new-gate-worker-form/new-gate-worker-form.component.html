@@ -1,0 +1,47 @@
+<div class="container">
+
+    <h3>Create a new Gate Worker</h3>
+    <hr />
+
+    <form [formGroup]="addGateWorkerForm" class="form-content" (ngSubmit)="savePremiseManagerData()">
+
+        <div class="form-group">
+            <label>Client Username: </label><br>
+            <select class="custom-select col-sm-6" formControlName="clientUsername">
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.clientName}}
+                </option>
+            </select>
+            <!-- <small id="usernameHelp" class="form-text text-muted">Select Client Username to </small> -->
+        </div>
+
+        <div class="form-group">
+            <label>Premise Name: </label><br>
+            <select class="custom-select col-sm-6" formControlName="premiseName">
+                <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
+                    {{premise.premiseName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="managerName">Gate Worker Name: </label>
+            <input type="text" class="form-control col-sm-6" id="managerName" placeholder="Enter Name"
+                formControlName="name">
+        </div>
+
+        <div class="form-group">
+            <label for="managerUsername">Gate Worker Username: </label>
+            <input type="text" class="form-control col-sm-6" id="managerUsername" placeholder="Enter Username"
+                formControlName="username">
+        </div>
+
+        <div class="form-group">
+            <label for="managerPassword">Gate Worker Password: </label>
+            <input type="password" class="form-control col-sm-6" id="managerPassword" placeholder="Enter Password"
+                formControlName="password">
+        </div>
+
+        <input type="submit" class="btn btn-dark">
+    </form>
+</div>

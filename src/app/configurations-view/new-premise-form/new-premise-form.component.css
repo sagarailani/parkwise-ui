@@ -3,7 +3,7 @@
     margin: auto;
     margin-top: 2em;
 }
-#entryTypeInline, #entryTypeInline input{
+.entryType input{
     margin-left: 1em;
 }
 

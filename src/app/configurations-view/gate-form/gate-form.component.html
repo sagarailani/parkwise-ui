@@ -1,0 +1,34 @@
+<div class="container">
+
+    <h3>Gate Configuration</h3>
+    <hr />
+
+    <form [formGroup]="gateConfigForm" class="form-content" (ngSubmit)="saveGateConfigData()">
+
+        <div class="form-group">
+            <label>Client Username: </label><br>
+            <select class="custom-select col-sm-6" formControlName="clientUsername">
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.clientName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Premise Name: </label><br>
+            <select class="custom-select col-sm-6" formControlName="premiseName">
+                <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
+                    {{premise.premiseName}}
+                </option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="gateName">Gate Name: </label>
+            <input type="text" class="form-control col-sm-6" id="gateName" placeholder="Enter Gate Name"
+                formControlName="gateName">
+        </div>
+
+        <input type="submit" class="btn btn-dark">
+    </form>
+</div>

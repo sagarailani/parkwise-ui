@@ -91,6 +91,11 @@
                 <div formGroupName="fourWheelerGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.fourWheeler.value === true">
                     <h5>Four Wheeler Configurations: </h5>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="valet" value="valet"
+                            formControlName="valet">
+                        <label class="form-check-label" for="valet">Valet</label>
+                    </div><br>
                     <label for="fourWheelerCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="fourWheelerCount"
                         placeholder="enter slot count" formControlName="availableSlots">

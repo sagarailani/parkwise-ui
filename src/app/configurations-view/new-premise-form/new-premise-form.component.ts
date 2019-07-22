@@ -33,6 +33,7 @@ export class NewPremiseFormComponent implements OnInit {
                 }),
                 fourWheeler: [''],
                 fourWheelerGroup: this.fb.group({
+                    valet: [''],
                     availableSlots: [''],
                 }),
                 heavy: [''],

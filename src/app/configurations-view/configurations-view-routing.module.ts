@@ -8,6 +8,7 @@ import { NewPremiseManagerFormComponent } from './new-premise-manager-form/new-p
 import { PricingFormComponent } from './pricing-form/pricing-form.component';
 import { NewGateWorkerFormComponent } from './new-gate-worker-form/new-gate-worker-form.component';
 import { UpdatePremiseConfigurationFormComponent } from './update-premise-configuration-form/update-premise-configuration-form.component';
+import { GeneratePassFormComponent } from './generate-pass-form/generate-pass-form.component';
 
 const routes: Routes = [
     {
@@ -39,6 +40,10 @@ const routes: Routes = [
             {
                 path: 'update-premise-configuration',
                 component: UpdatePremiseConfigurationFormComponent
+            },
+            {
+                path: 'generate-pass',
+                component: GeneratePassFormComponent
             }
         ]
     },

@@ -30,6 +30,8 @@ export class ConfigurationsCardComponent implements OnInit {
                 break;
             case "Premise Configuration": this.router.navigate(['update-premise-configuration'], { relativeTo: this.route })
                 break;
+            case "Generate Pass": this.router.navigate(['generate-pass'], { relativeTo: this.route })
+                break;
 
         }
     }

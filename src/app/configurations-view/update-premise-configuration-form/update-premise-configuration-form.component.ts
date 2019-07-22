@@ -60,7 +60,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
         console.log(this.updatePremiseConfigForm.controls.disablePremiseConfig.value)
     }
 
-    savePremiseManagerData() {
+    savePremiseConfigData() {
         console.log(this.updatePremiseConfigForm.value)
     }
 
@@ -68,7 +68,6 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
         this.clientPremiseService.getClients()
             .subscribe(clients => this.clients = clients)
     }
-
 
     patchUpdatedValues() {
         this.updatePremiseConfigForm.controls.entryTypeRegular.setValue(true)

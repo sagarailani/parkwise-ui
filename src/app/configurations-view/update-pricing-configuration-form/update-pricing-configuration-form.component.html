@@ -7,20 +7,29 @@
 
         <div class="form-group">
             <label>Client Username: </label><br>
-            <select class="custom-select col-sm-6" formControlName="clientUsername">
+            <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
                     {{client.clientName}}
                 </option>
             </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
+                {{formErrors.clientUsername}}
+            </div>
+
         </div>
 
         <div class="form-group">
             <label>Premise Name: </label><br>
-            <select class="custom-select col-sm-6" formControlName="premiseName">
+            <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
                 <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
                     {{premise.premiseName}}
                 </option>
             </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
+                {{formErrors.premiseName}}
+            </div>
         </div>
 
         <div class="form-check">
@@ -46,45 +55,71 @@
                 <div class="pricing-strategies">
                     <label>Pricing Strategy: </label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixedStrategy"
-                            formControlName="twoWheelerPricingStrategy">
+                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixed"
+                            formControlName="twoWheelerPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="fixedPricing">Fixed</label>
                     </div>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="icrementalPricing" value="incrementalStrategy"
-                            formControlName="twoWheelerPricingStrategy">
+                        <input class="form-check-input" type="radio" id="icrementalPricing" value="incremental"
+                            formControlName="twoWheelerPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="icrementalPricing">Incremental</label>
                     </div>
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twoWheelerPricingStrategy">
+                        {{formErrors.twoWheelerPricingStrategy}}
+                    </div>
+
                 </div>
 
                 <div class="baseStrategy">
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value === 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value === 'incremental'">
                         <label for="baseTime">Base Time: </label>
                         <input type="number" class="form-control col-sm-6" id="baseTime" placeholder="Enter Base Time"
-                            formControlName="baseTime">
+                            formControlName="twBaseTime" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twBaseTime">
+                            {{formErrors.twBaseTime}}
+                        </div>
+
                     </div>
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value === 'fixedStrategy' || 
-                        updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value=== 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value === 'fixed' || 
+                        updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value=== 'incremental'">
                         <label for="basePrice">Base Price: </label>
                         <input type="number" class="form-control col-sm-6" id="basePrice" placeholder="Enter Base Price"
-                            formControlName="basePrice">
+                            formControlName="twBasePrice" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twBasePrice">
+                            {{formErrors.twBasePrice}}
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="incrementalStrategy"
-                    *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value=== 'incrementalStrategy'">
+                    *ngIf="updatePriceConfigForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value=== 'incremental'">
                     <div class="form-group">
                         <label for="incrementalTime">Incremental Time: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalTime"
-                            placeholder="Enter Incremental Time" formControlName="incrementalTime">
+                            placeholder="Enter Incremental Time" formControlName="twIncrementalTime"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twIncrementalTime">
+                            {{formErrors.twIncrementalTime}}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="incrementalPrice">Incremental Price: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalPrice"
-                            placeholder="Enter Incremental Price" formControlName="incrementalPrice">
+                            placeholder="Enter Incremental Price" formControlName="twIncrementalPrice"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twIncrementalPrice">
+                            {{formErrors.twIncrementalPrice}}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -104,49 +139,70 @@
                 <div class="pricing-strategies">
                     <label>Pricing Strategy: </label>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixedStrategy"
-                            formControlName="fourWheelerPricingStrategy">
+                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixed"
+                            formControlName="fourWheelerPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="fixedPricing">Fixed</label>
                     </div>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incrementalStrategy"
-                            formControlName="fourWheelerPricingStrategy">
+                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incremental"
+                            formControlName="fourWheelerPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="incrementalPricing">Incremental</label>
+                    </div>
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fourWheelerPricingStrategy">
+                        {{formErrors.fourWheelerPricingStrategy}}
                     </div>
                 </div>
 
                 <div class="baseStrategy">
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value === 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value === 'incremental'">
                         <label for="baseTime">Base Time: </label>
                         <input type="number" class="form-control col-sm-6" id="baseTime" placeholder="Enter Base Time"
-                            formControlName="baseTime">
+                            formControlName="fwBaseTime" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwBaseTime">
+                            {{formErrors.fwBaseTime}}
+                        </div>
                     </div>
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value === 'fixedStrategy' || 
-                        updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value=== 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value === 'fixed' || 
+                                updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value=== 'incremental'">
                         <label for="basePrice">Base Price: </label>
                         <input type="number" class="form-control col-sm-6" id="basePrice" placeholder="Enter Base Price"
-                            formControlName="basePrice">
+                            formControlName="fwBasePrice" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwBasePrice">
+                            {{formErrors.fwBasePrice}}
+                        </div>
                     </div>
                 </div>
 
                 <div class="incrementalStrategy"
-                    *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value=== 'incrementalStrategy'">
+                    *ngIf="updatePriceConfigForm.controls.fourWheelerPriceGroup.controls.fourWheelerPricingStrategy.value=== 'incremental'">
+
                     <div class="form-group">
                         <label for="incrementalTime">Incremental Time: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalTime"
-                            placeholder="Enter Incremental Time" formControlName="incrementalTime">
+                            placeholder="Enter Incremental Time" formControlName="fwIncrementalTime"
+                            (blur)="logValidationErrors()">
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwIncrementalTime">
+                            {{formErrors.fwIncrementalTime}}
+                        </div>
                     </div>
+
                     <div class="form-group">
                         <label for="incrementalPrice">Incremental Price: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalPrice"
-                            placeholder="Enter Incremental Price" formControlName="incrementalPrice">
+                            placeholder="Enter Incremental Price" formControlName="fwIncrementalPrice"
+                            (blur)="logValidationErrors()">
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwIncrementalPrice">
+                            {{formErrors.fwIncrementalPrice}}
+                        </div>
                     </div>
+
                 </div>
-
-
 
             </div>
 
@@ -161,47 +217,79 @@
             <div formGroupName="heavyPriceGroup" *ngIf="updatePriceConfigForm.controls.heavy.value === true">
 
                 <div class="pricing-strategies">
+
                     <label>Pricing Strategy: </label>
+
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixedStrategy"
-                            formControlName="heavyPricingStrategy">
+                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixed"
+                            formControlName="heavyPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="fixedPricing">Fixed</label>
                     </div>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incrementalStrategy"
-                            formControlName="heavyPricingStrategy">
+                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incremental"
+                            formControlName="heavyPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="incrementalPricing">Incremental</label>
+                    </div>
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.heavyPricingStrategy">
+                        {{formErrors.heavyPricingStrategy}}
                     </div>
                 </div>
 
                 <div class="baseStrategy">
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value === 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value === 'incremental'">
+
                         <label for="baseTime">Base Time: </label>
                         <input type="number" class="form-control col-sm-6" id="baseTime" placeholder="Enter Base Time"
-                            formControlName="baseTime">
+                            formControlName="hBaseTime" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hBaseTime">
+                            {{formErrors.hBaseTime}}
+                        </div>
                     </div>
+
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value === 'fixedStrategy' || 
-                                        updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value=== 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value === 'fixed' || 
+                                            updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value=== 'incremental'">
+
                         <label for="basePrice">Base Price: </label>
                         <input type="number" class="form-control col-sm-6" id="basePrice" placeholder="Enter Base Price"
-                            formControlName="basePrice">
+                            formControlName="hBasePrice" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hBasePrice">
+                            {{formErrors.hBasePrice}}
+                        </div>
                     </div>
+
                 </div>
 
                 <div class="incrementalStrategy"
-                    *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value=== 'incrementalStrategy'">
+                    *ngIf="updatePriceConfigForm.controls.heavyPriceGroup.controls.heavyPricingStrategy.value=== 'incremental'">
+
                     <div class="form-group">
                         <label for="incrementalTime">Incremental Time: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalTime"
-                            placeholder="Enter Incremental Time" formControlName="incrementalTime">
+                            placeholder="Enter Incremental Time" formControlName="hIncrementalTime"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hIncrementalTime">
+                            {{formErrors.hIncrementalTime}}
+                        </div>
+
                     </div>
+
                     <div class="form-group">
                         <label for="incrementalPrice">Incremental Price: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalPrice"
-                            placeholder="Enter Incremental Price" formControlName="incrementalPrice">
+                            placeholder="Enter Incremental Price" formControlName="hIncrementalPrice"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hIncrementalPrice">
+                            {{formErrors.hIncrementalPrice}}
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -218,52 +306,79 @@
 
                 <div class="pricing-strategies">
                     <label>Pricing Strategy: </label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixedStrategy"
-                            formControlName="busPricingStrategy">
+                    <div class="form-chieck form-check-inline">
+                        <input class="form-check-input" type="radio" id="fixedPricing" value="fixed"
+                            formControlName="busPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="fixedPricing">Fixed</label>
                     </div>
 
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incrementalStrategy"
-                            formControlName="busPricingStrategy">
+                        <input class="form-check-input" type="radio" id="incrementalPricing" value="incremental"
+                            formControlName="busPricingStrategy" (blur)="logValidationErrors()">
                         <label class="form-check-label" for="incrementalPricing">Incremental</label>
                     </div>
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.busPricingStrategy">
+                        {{formErrors.busPricingStrategy}}
+                    </div>
+
                 </div>
 
                 <div class="baseStrategy">
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value === 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value === 'incremental'">
                         <label for="baseTime">Base Time: </label>
                         <input type="number" class="form-control col-sm-6" id="baseTime" placeholder="Enter Base Time"
-                            formControlName="baseTime">
+                            formControlName="bBaseTime" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bBaseTime">
+                            {{formErrors.bBaseTime}}
+                        </div>
+
                     </div>
                     <div class="form-group"
-                        *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value === 'fixedStrategy' || 
-                        updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value=== 'incrementalStrategy'">
+                        *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value === 'fixed' || 
+                                                        updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value=== 'incremental'">
                         <label for="basePrice">Base Price: </label>
                         <input type="number" class="form-control col-sm-6" id="basePrice" placeholder="Enter Base Price"
-                            formControlName="basePrice">
+                            formControlName="bBasePrice" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bBasePrice">
+                            {{formErrors.bBasePrice}}
+                        </div>
+
                     </div>
                 </div>
 
                 <div class="incrementalStrategy"
-                    *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value=== 'incrementalStrategy'">
+                    *ngIf="updatePriceConfigForm.controls.busPriceGroup.controls.busPricingStrategy.value=== 'incremental'">
                     <div class="form-group">
                         <label for="incrementalTime">Incremental Time: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalTime"
-                            placeholder="Enter Incremental Time" formControlName="incrementalTime">
+                            placeholder="Enter Incremental Time" formControlName="bIncrementalTime"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalTime">
+                            {{formErrors.bIncrementalTime}}
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <label for="incrementalPrice">Incremental Price: </label>
                         <input type="number" class="form-control col-sm-6" id="incrementalPrice"
-                            placeholder="Enter Incremental Price" formControlName="incrementalPrice">
+                            placeholder="Enter Incremental Price" formControlName="bIncrementalPrice"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                            {{formErrors.bIncrementalPrice}}
+                        </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <input type="submit" class="btn btn-dark" value="Update">
+        <input type="submit" class="btn btn-dark" value="Update" [disabled]="updatePriceConfigForm.invalid">
     </form>
 </div>

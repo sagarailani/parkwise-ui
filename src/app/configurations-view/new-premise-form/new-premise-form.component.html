@@ -49,18 +49,6 @@
 
                 <h5>Regular Vehicle Configurations</h5>
 
-                <div id="entryTypeInline" class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
-                        formControlName="pass">
-                    <label class="form-check-label" for="passCheckbox">Pass</label>
-                </div>
-
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
-                        formControlName="registered">
-                    <label class="form-check-label" for="registeredCheckbox">Registered</label>
-                </div>
-
                 <div>
                     <label for="entryTypeInline">Vehicle Type:</label> <br>
 
@@ -92,7 +80,21 @@
                 <div formGroupName="twoWheelerGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.twoWheeler.value === true">
                     <h5>Two Wheeler Configurations: </h5>
+
+                    <div id="entryTypeInline" class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                            formControlName="pass">
+                        <label class="form-check-label" for="passCheckbox">Pass</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                            formControlName="registered">
+                        <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                    </div><br />
+
                     <label for="twoWheelerCount">Slot Count: </label>
+
                     <input type="number" class="form-control col-sm-6" id="twoWheelerCount"
                         placeholder="enter slot count" formControlName="twAvailableSlots"
                         (blur)="logValidationErrors()">
@@ -103,9 +105,21 @@
 
                 </div>
 
-                <div formGroupName=" fourWheelerGroup"
+                <div formGroupName="fourWheelerGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.fourWheeler.value === true">
                     <h5>Four Wheeler Configurations: </h5>
+                    <div id="entryTypeInline" class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                            formControlName="pass">
+                        <label class="form-check-label" for="passCheckbox">Pass</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                            formControlName="registered">
+                        <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                    </div>
+
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="valet" value="valet"
                             formControlName="valet">
@@ -119,13 +133,24 @@
                     <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwAvailableSlots">
                         {{formErrors.fwAvailableSlots}}
                     </div>
-
-
                 </div>
 
-                <div formGroupName=" heavyGroup"
+                <div formGroupName="heavyGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.heavy.value === true">
                     <h5>Heavy Vehicle Configurations: </h5>
+
+                    <div id="entryTypeInline" class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                            formControlName="pass">
+                        <label class="form-check-label" for="passCheckbox">Pass</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                            formControlName="registered">
+                        <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                    </div><br />
+
                     <label for="heavyCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="heavyCount" placeholder="enter slot count"
                         formControlName="hAvailableSlots" (blur)="logValidationErrors()">
@@ -136,9 +161,22 @@
 
                 </div>
 
-                <div formGroupName=" busGroup"
+                <div formGroupName="busGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.bus.value === true">
                     <h5>Bus Configurations: </h5>
+
+                    <div id="entryTypeInline" class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                            formControlName="pass">
+                        <label class="form-check-label" for="passCheckbox">Pass</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                            formControlName="registered">
+                        <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                    </div><br />
+
                     <label for="busCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="busCount" placeholder="enter slot count"
                         formControlName="bAvailableSlots" (blur)="logValidationErrors()">
@@ -152,7 +190,7 @@
 
             </div>
 
-            <div formGroupName=" entryTypeTemporaryForm"
+            <div formGroupName="entryTypeTemporaryForm"
                 *ngIf="newPremiseDataInputForm.controls.entryTypeTemporary.value === true">
 
                 <h5>Temporary Vehicle Configurations: </h5>
@@ -167,7 +205,7 @@
             </div>
 
         </div>
-
-        <input type="submit" class="btn btn-dark" [disabled]="newPremiseDataInputForm.invalid">
+        <input type="submit" class="btn btn-dark">
+        <!-- <input type="submit" class="btn btn-dark" [disabled]="newPremiseDataInputForm.invalid"> -->
     </form>
 </div>

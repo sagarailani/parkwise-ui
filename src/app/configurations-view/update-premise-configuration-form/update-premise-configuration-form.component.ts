@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ClientPremiseService } from '../client-premise.service';
 
 @Component({
     selector: 'app-update-premise-configuration-form',
@@ -13,7 +12,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
     clients: {}[];
     premiseForClient: {}[];
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService) { }
+    constructor(private fb: FormBuilder) { }
 
     validationMessages = {
         'clientUsername': {
@@ -83,13 +82,14 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
 
         // console.log(this.clients)
 
-        this.getClients();
-        this.updatePremiseConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
-            console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
-                .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
-        });
+
+        // this.updatePremiseConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
+        //     console.log("Printing clientId: " + clientId);
+        //     this.clientPremiseService.getPremiseForClient(clientId)
+        //         .subscribe(premises => this.premiseForClient = premises)
+        //     console.log(this.premiseForClient)
+        // });
+
         this.patchUpdatedValues();
         console.log(this.updatePremiseConfigForm.controls.disablePremiseConfig.value)
 
@@ -157,11 +157,6 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
 
     savePremiseConfigData() {
         console.log(this.updatePremiseConfigForm.value)
-    }
-
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
     }
 
     patchUpdatedValues() {

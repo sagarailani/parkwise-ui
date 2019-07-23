@@ -56,23 +56,29 @@ export class NewPremiseFormComponent implements OnInit {
             entryTypeRegular: [''],
             entryTypeTemporary: [''],
             entryTypeRegularForm: this.fb.group({
-                pass: [''],
-                registered: [''],
                 twoWheeler: [''],
                 twoWheelerGroup: this.fb.group({
+                    pass: [''],
+                    registered: [''],
                     twAvailableSlots: [''],
                 }),
                 fourWheeler: [''],
                 fourWheelerGroup: this.fb.group({
+                    pass: [''],
+                    registered: [''],
                     valet: [''],
                     fwAvailableSlots: [''],
                 }),
                 heavy: [''],
                 heavyGroup: this.fb.group({
+                    pass: [''],
+                    registered: [''],
                     hAvailableSlots: [''],
                 }),
                 bus: [''],
                 busGroup: this.fb.group({
+                    pass: [''],
+                    registered: [''],
                     bAvailableSlots: [''],
                 }),
             }),
@@ -119,7 +125,7 @@ export class NewPremiseFormComponent implements OnInit {
 
         this.newPremiseDataInputForm.controls.entryTypeRegularForm.get('bus').valueChanges
             .subscribe((value) => {
-                let availableSlots = this.newPremiseDataInputForm.controls.entryTypeRegularForm.get('busWheelerGroup').get('bAvailableSlots');
+                let availableSlots = this.newPremiseDataInputForm.controls.entryTypeRegularForm.get('busGroup').get('bAvailableSlots');
                 if (value) {
                     availableSlots.setValidators(Validators.required)
                 } else {
@@ -142,17 +148,17 @@ export class NewPremiseFormComponent implements OnInit {
             })
 
 
-        this._clientService.getClients()
-            .subscribe((value) => {
-                this.clients = value;
-                console.log(this.clients)
-            })
-
-
+        // this._clientService.getClients()
+        //     .subscribe((value) => {
+        //         this.clients = value;
+        //         console.log(this.clients)
+        //     })
+        // this.newPremiseDataInputForm.controls.clientUsername.setValue('SAMPLE');
     }
 
     savePremiseData() {
         console.log(this.newPremiseDataInputForm.value)
+        console.log(this.newPremiseDataInputForm.controls.entryTypeRegular.value)
     }
 
     logValidationErrors(group: FormGroup = this.newPremiseDataInputForm) {

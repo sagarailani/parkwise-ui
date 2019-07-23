@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ClientPremiseService } from '../client-premise.service';
 
 @Component({
     selector: 'app-update-pricing-configuration-form',
@@ -108,7 +107,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
     }
 
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService) { }
+    constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
         this.updatePriceConfigForm = this.fb.group({
@@ -151,13 +150,13 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
 
         // console.log(this.clients)
 
-        this.getClients();
-        this.updatePriceConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
-            console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
-                .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
-        });
+
+        // this.updatePriceConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
+        //     console.log("Printing clientId: " + clientId);
+        //     this.clientPremiseService.getPremiseForClient(clientId)
+        //         .subscribe(premises => this.premiseForClient = premises)
+        //     console.log(this.premiseForClient)
+        // });
 
         this.updatePriceConfigForm.controls.disablePriceConfig.valueChanges.subscribe((value) => {
             if (value) {
@@ -322,11 +321,6 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
 
     savePriceConfigData() {
         console.log(this.updatePriceConfigForm.value)
-    }
-
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
     }
 
     patchUpdatedValues() {

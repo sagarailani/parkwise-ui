@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ClientPremiseService } from './client-premise.service';
+import { GateService } from './gate.service';
 
-describe('ClientPremiseService', () => {
+describe('GateService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ClientPremiseService = TestBed.get(ClientPremiseService);
+    const service: GateService = TestBed.get(GateService);
     expect(service).toBeTruthy();
   });
 });

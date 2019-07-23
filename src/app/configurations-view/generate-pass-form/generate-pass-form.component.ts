@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ClientPremiseService } from '../client-premise.service';
 
 @Component({
     selector: 'app-generate-pass-form',
@@ -39,7 +38,7 @@ export class GeneratePassFormComponent implements OnInit {
     }
 
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService) { }
+    constructor(private fb: FormBuilder) { }
 
     ngOnInit() {
         this.generatePassForm = this.fb.group({
@@ -52,13 +51,13 @@ export class GeneratePassFormComponent implements OnInit {
 
         console.log(this.clients)
 
-        this.getClients();
-        this.generatePassForm.controls.clientUsername.valueChanges.subscribe(clientId => {
-            console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
-                .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
-        });
+
+        // this.generatePassForm.controls.clientUsername.valueChanges.subscribe(clientId => {
+        //     console.log("Printing clientId: " + clientId);
+        //     this.clientPremiseService.getPremiseForClient(clientId)
+        //         .subscribe(premises => this.premiseForClient = premises)
+        //     console.log(this.premiseForClient)
+        // });
 
         this.generatePassForm.valueChanges.subscribe((value) => {
             this.logValidationErrors();
@@ -68,11 +67,6 @@ export class GeneratePassFormComponent implements OnInit {
 
     savePassData() {
         console.log(this.generatePassForm.value)
-    }
-
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
     }
 
     logValidationErrors(group: FormGroup = this.generatePassForm) {

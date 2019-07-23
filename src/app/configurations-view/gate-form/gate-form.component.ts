@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ClientPremiseService } from '../client-premise.service';
+import { GateService } from '../gate.service';
+import { UserService } from '../user.service';
+import { PremiseService } from '../premise.service';
 
 @Component({
     selector: 'app-gate-form',
@@ -9,8 +11,8 @@ import { ClientPremiseService } from '../client-premise.service';
 })
 export class GateFormComponent implements OnInit {
     gateConfigForm: FormGroup;
-    clients: {}[];
-    premiseForClient: {}[];
+    clients: {};
+    premiseForClient: any;
 
     validationMessages = {
         'clientUsername': {
@@ -31,7 +33,10 @@ export class GateFormComponent implements OnInit {
     }
 
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService) { }
+    constructor(private fb: FormBuilder,
+        private _gateService: GateService,
+        private _userService: UserService,
+        private _premiseService: PremiseService) { }
 
     ngOnInit() {
         this.gateConfigForm = this.fb.group({
@@ -40,14 +45,16 @@ export class GateFormComponent implements OnInit {
             gateName: ['', Validators.required],
         })
 
-        console.log(this.clients)
+        this._userService.getClients()
+            .subscribe((clients) => {
+                this.clients = clients;
+            })
 
-        this.getClients();
         this.gateConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
+            this._premiseService.getPremises(clientId)
                 .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
+            // console.log(this.premiseForClient)
         });
 
         this.gateConfigForm.valueChanges.subscribe((value) => {
@@ -56,12 +63,10 @@ export class GateFormComponent implements OnInit {
     }
 
     saveGateConfigData() {
-        console.log(this.gateConfigForm.value)
-    }
-
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
+        this._gateService.addGateForPremise(this.gateConfigForm.controls.premiseName.value, this.gateConfigForm.controls.gateName.value)
+            .subscribe((value) => {
+                console.log(value)
+            })
     }
 
     logValidationErrors(group: FormGroup = this.gateConfigForm) {

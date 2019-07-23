@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ClientPremiseService } from '../client-premise.service';
 import { UserService } from '../user.service';
 import { ClientService } from '../client.service';
 import { PremiseService } from '../premise.service';
@@ -42,7 +41,6 @@ export class NewPremiseManagerFormComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        private clientPremiseService: ClientPremiseService,
         private _userService: UserService,
         private _clientService: ClientService,
         private _premiseService: PremiseService) { }

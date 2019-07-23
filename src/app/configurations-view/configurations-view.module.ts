@@ -17,10 +17,12 @@ import { GeneratePassFormComponent } from './generate-pass-form/generate-pass-fo
 import { GateFormComponent } from './gate-form/gate-form.component';
 import { RegisteredVehicleComponent } from './registered-vehicle/registered-vehicle.component';
 import { UpdatePricingConfigurationFormComponent } from './update-pricing-configuration-form/update-pricing-configuration-form.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [ConfigurationsViewComponent, TitleBarComponent, ConfigurationsContainerComponent, ConfigurationsCardComponent, NewClientFormComponent, NewPremiseFormComponent, NewPremiseManagerFormComponent, PricingFormComponent, NewGateWorkerFormComponent, UpdatePremiseConfigurationFormComponent, GeneratePassFormComponent, GateFormComponent, RegisteredVehicleComponent, UpdatePricingConfigurationFormComponent],
     imports: [
+        HttpClientModule,
         CommonModule,
         ConfigurationsViewRoutingModule,
         ReactiveFormsModule

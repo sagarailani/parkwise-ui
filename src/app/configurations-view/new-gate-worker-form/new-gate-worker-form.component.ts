@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClientPremiseService } from '../client-premise.service';
 import { UserService } from '../user.service';
+import { ClientService } from '../client.service';
+import { PremiseService } from '../premise.service';
 
 @Component({
     selector: 'app-new-gate-worker-form',
@@ -11,9 +13,9 @@ import { UserService } from '../user.service';
 export class NewGateWorkerFormComponent implements OnInit {
 
     addGateWorkerForm: FormGroup;
-    userRole: string = "GATEWORKER";
-    clients: {}[];
-    premiseForClient: {}[];
+    userRole: string = "WORKER";
+    clients: {};
+    premiseForClient: {};
 
     validationMessages = {
         'clientUsername': {
@@ -38,7 +40,11 @@ export class NewGateWorkerFormComponent implements OnInit {
         'password': '',
     }
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService, private userService: UserService) { }
+    constructor(private fb: FormBuilder,
+        private clientPremiseService: ClientPremiseService,
+        private _userService: UserService,
+        private _clientService: ClientService,
+        private _premiseService: PremiseService) { }
 
     ngOnInit() {
         this.addGateWorkerForm = this.fb.group({
@@ -48,15 +54,20 @@ export class NewGateWorkerFormComponent implements OnInit {
             password: ['', Validators.required]
         })
 
-        console.log(this.clients)
+        // console.log(this.clients)
 
-        this.getClients();
         this.addGateWorkerForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
+            this._premiseService.getPremises(clientId)
                 .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
+
         });
+
+        this._clientService.getClients()
+            .subscribe((clients) => {
+                this.clients = clients
+            });
+
 
         this.addGateWorkerForm.valueChanges.subscribe(() => {
             this.logValidationErrors();
@@ -65,21 +76,21 @@ export class NewGateWorkerFormComponent implements OnInit {
     }
 
     saveGateWorkerData() {
-        let isPresent = this.userService.checkForUsername(this.addGateWorkerForm.get('username').value)
-        if (isPresent) {
-            this.formErrors['username'] = ""
-            this.formErrors['username'] += this.validationMessages['username']['unique'];
-        } else {
-            this.formErrors['username'] = ""
-            console.log("This data will be sent to Server: ")
-            console.log(this.addGateWorkerForm.value)
-        }
-
-    }
-
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
+        let present = this._userService.checkForUsername(this.addGateWorkerForm.get('username').value)
+            .subscribe((value) => {
+                console.log(value)
+                if (value === false) {
+                    this.formErrors['username'] = ""
+                    this.formErrors['username'] += this.validationMessages['username']['unique'];
+                    return;
+                } else {
+                    this.formErrors['username'] = ""
+                    this._userService.addUser(this.addGateWorkerForm.value, this.userRole)
+                        .subscribe((value) => {
+                            console.log(value)
+                        })
+                }
+            })
     }
 
     logValidationErrors(group: FormGroup = this.addGateWorkerForm) {

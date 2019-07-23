@@ -7,8 +7,8 @@
         <div class="form-group">
             <label for="clientUsername">Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
-                <option *ngFor=" let client of clients" value="{{client}}">
-                    {{client}}
+                <option *ngFor=" let client of clients" value="{{client.name}}">
+                    {{client.name}}
                 </option>
             </select>
 
@@ -100,7 +100,6 @@
                     <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twAvailableSlots">
                         {{formErrors.twAvailableSlots}}
                     </div>
-
 
                 </div>
 

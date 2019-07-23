@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClientPremiseService } from '../client-premise.service';
 import { UserService } from '../user.service';
+import { ClientService } from '../client.service';
+import { PremiseService } from '../premise.service';
 
 @Component({
     selector: 'app-new-premise-manager-form',
@@ -12,8 +14,8 @@ export class NewPremiseManagerFormComponent implements OnInit {
 
     addPremiseManagerForm: FormGroup;
     userRole: string = "MANAGER";
-    clients: {}[];
-    premiseForClient: {}[];
+    clients: {};
+    premiseForClient: {};
 
     validationMessages = {
         'clientUsername': {
@@ -38,7 +40,12 @@ export class NewPremiseManagerFormComponent implements OnInit {
         'password': '',
     }
 
-    constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService, private userService: UserService) { }
+    constructor(
+        private fb: FormBuilder,
+        private clientPremiseService: ClientPremiseService,
+        private _userService: UserService,
+        private _clientService: ClientService,
+        private _premiseService: PremiseService) { }
 
     ngOnInit() {
         this.addPremiseManagerForm = this.fb.group({
@@ -48,34 +55,42 @@ export class NewPremiseManagerFormComponent implements OnInit {
             password: ['', Validators.required]
         })
 
-        this.getClients();
         this.addPremiseManagerForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
-            this.clientPremiseService.getPremiseForClient(clientId)
-                .subscribe(premises => this.premiseForClient = premises)
-            console.log(this.premiseForClient)
+            this._premiseService.getPremises(clientId)
+                .subscribe((premises) => {
+                    console.log(premises)
+                    this.premiseForClient = premises
+                })
         });
 
         this.addPremiseManagerForm.valueChanges.subscribe((value) => {
             this.logValidationErrors();
         })
+
+        this._clientService.getClients()
+            .subscribe((data) => {
+                this.clients = data;
+            })
     }
 
     savePremiseManagerData() {
-        let isPresent = this.userService.checkForUsername(this.addPremiseManagerForm.get('username').value)
-        if (isPresent) {
-            this.formErrors['username'] = ""
-            this.formErrors['username'] += this.validationMessages['username']['unique'];
-        } else {
-            this.formErrors['username'] = ""
-            console.log("This data will be sent to Server: ")
-            console.log(this.addPremiseManagerForm.value)
-        }
-    }
+        let present = this._userService.checkForUsername(this.addPremiseManagerForm.get('username').value)
+            .subscribe((value) => {
+                console.log(value)
+                if (value === false) {
+                    this.formErrors['username'] = ""
+                    this.formErrors['username'] += this.validationMessages['username']['unique'];
+                    return;
+                } else {
+                    this.formErrors['username'] = ""
+                    this._userService.addUser(this.addPremiseManagerForm.value, this.userRole)
+                        .subscribe((value) => {
+                            console.log(value)
+                        })
+                }
+            })
 
-    getClients() {
-        this.clientPremiseService.getClients()
-            .subscribe(clients => this.clients = clients)
     }
 
     logValidationErrors(group: FormGroup = this.addPremiseManagerForm) {

@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GateWorkerViewModule } from './gate-worker-view/gate-worker-view.module';
 import { ConfigurationsViewModule } from './configurations-view/configurations-view.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import { ConfigurationsViewModule } from './configurations-view/configurations-v
     ],
     imports: [
         BrowserModule,
+        HttpClientModule,
         ReactiveFormsModule,
         GateWorkerViewModule,
         ConfigurationsViewModule,

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { ClientService } from '../client.service';
 
 @Component({
     selector: 'app-new-premise-form',
@@ -10,13 +11,9 @@ export class NewPremiseFormComponent implements OnInit {
 
     newPremiseDataInputForm: FormGroup;
 
-    clients: string[] = [
-        "ABCD",
-        "DEFG",
-        "HIJK"
-    ]
+    clients;
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: FormBuilder, private _clientService: ClientService) { }
 
     validationMessages = {
         'clientUsername': {
@@ -143,6 +140,15 @@ export class NewPremiseFormComponent implements OnInit {
                 }
                 allotedTime.updateValueAndValidity();
             })
+
+
+        this._clientService.getClients()
+            .subscribe((value) => {
+                this.clients = value;
+                console.log(this.clients)
+            })
+
+
     }
 
     savePremiseData() {

@@ -6,17 +6,27 @@
     <form [formGroup]="newPremiseDataInputForm" class="form-content" (ngSubmit)="savePremiseData()">
         <div class="form-group">
             <label for="clientUsername">Client Username: </label><br>
-            <select class="custom-select col-sm-6" formControlName="clientUsername">
-                <option *ngFor="let client of clients" value="{{client}}">
+            <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
+                <option *ngFor=" let client of clients" value="{{client}}">
                     {{client}}
                 </option>
             </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
+                {{formErrors.clientUsername}}
+            </div>
+
         </div>
 
         <div class="form-group">
             <label for="premiseName">Premise Name: </label>
             <input type="text" class="form-control col-sm-6" id="premiseName" placeholder="enter premise name"
-                formControlName="premiseName">
+                formControlName="premiseName" (blur)="logValidationErrors()">
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
+                {{formErrors.premiseName}}
+            </div>
+
         </div>
 
         <div class="entry-type">
@@ -84,11 +94,17 @@
                     <h5>Two Wheeler Configurations: </h5>
                     <label for="twoWheelerCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="twoWheelerCount"
-                        placeholder="enter slot count" formControlName="availableSlots">
+                        placeholder="enter slot count" formControlName="twAvailableSlots"
+                        (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twAvailableSlots">
+                        {{formErrors.twAvailableSlots}}
+                    </div>
+
 
                 </div>
 
-                <div formGroupName="fourWheelerGroup"
+                <div formGroupName=" fourWheelerGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.fourWheeler.value === true">
                     <h5>Four Wheeler Configurations: </h5>
                     <div class="form-check form-check-inline">
@@ -98,43 +114,60 @@
                     </div><br>
                     <label for="fourWheelerCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="fourWheelerCount"
-                        placeholder="enter slot count" formControlName="availableSlots">
+                        placeholder="enter slot count" formControlName="fwAvailableSlots"
+                        (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwAvailableSlots">
+                        {{formErrors.fwAvailableSlots}}
+                    </div>
+
 
                 </div>
 
-                <div formGroupName="heavyGroup"
+                <div formGroupName=" heavyGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.heavy.value === true">
                     <h5>Heavy Vehicle Configurations: </h5>
                     <label for="heavyCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="heavyCount" placeholder="enter slot count"
-                        formControlName="availableSlots">
+                        formControlName="hAvailableSlots" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hAvailableSlots">
+                        {{formErrors.hAvailableSlots}}
+                    </div>
 
                 </div>
 
-                <div formGroupName="busGroup"
+                <div formGroupName=" busGroup"
                     *ngIf="newPremiseDataInputForm.controls.entryTypeRegularForm.controls.bus.value === true">
                     <h5>Bus Configurations: </h5>
                     <label for="busCount">Slot Count: </label>
                     <input type="number" class="form-control col-sm-6" id="busCount" placeholder="enter slot count"
-                        formControlName="availableSlots">
+                        formControlName="bAvailableSlots" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bAvailableSlots">
+                        {{formErrors.bAvailableSlots}}
+                    </div>
 
                 </div>
 
 
             </div>
 
-            <div formGroupName="entryTypeTemporaryForm"
+            <div formGroupName=" entryTypeTemporaryForm"
                 *ngIf="newPremiseDataInputForm.controls.entryTypeTemporary.value === true">
 
                 <h5>Temporary Vehicle Configurations: </h5>
                 <label for="allotedTime">Alloted Time: </label>
                 <input type="number" class="form-control col-sm-6" id="allotedTime" placeholder="enter alloted time"
-                    formControlName="allotedTime">
+                    formControlName="allotedTime" (blur)="logValidationErrors()">
+
+                <div class="alert alert-danger col-sm-6" *ngIf="formErrors.allotedTime">
+                    {{formErrors.allotedTime}}
+                </div>
 
             </div>
 
         </div>
-
 
         <input type="submit" class="btn btn-dark" [disabled]="newPremiseDataInputForm.invalid">
     </form>

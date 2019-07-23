@@ -7,20 +7,30 @@
 
         <div class="form-group">
             <label>Client Username: </label><br>
-            <select class="custom-select col-sm-6" formControlName="clientUsername">
+            <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
                     {{client.clientName}}
                 </option>
             </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
+                {{formErrors.clientUsername}}
+            </div>
+
         </div>
 
         <div class="form-group">
             <label>Premise Name: </label><br>
-            <select class="custom-select col-sm-6" formControlName="premiseName">
+            <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
                 <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
                     {{premise.premiseName}}
                 </option>
             </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
+                {{formErrors.premiseName}}
+            </div>
+
         </div>
 
         <div class="form-check">
@@ -98,7 +108,12 @@
                         <h5>Two Wheeler Configurations: </h5>
                         <label for="twoWheelerCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="twoWheelerCount"
-                            placeholder="enter slot count" formControlName="availableSlots">
+                            placeholder="enter slot count" formControlName="twAvailableSlots"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twAvailableSlots">
+                            {{formErrors.twAvailableSlots}}
+                        </div>
 
                     </div>
 
@@ -107,7 +122,12 @@
                         <h5>Four Wheeler Configurations: </h5>
                         <label for="fourWheelerCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="fourWheelerCount"
-                            placeholder="enter slot count" formControlName="availableSlots">
+                            placeholder="enter slot count" formControlName="fwAvailableSlots"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.fwAvailableSlots">
+                            {{formErrors.fwAvailableSlots}}
+                        </div>
 
                     </div>
 
@@ -116,7 +136,12 @@
                         <h5>Heavy Vehicle Configurations: </h5>
                         <label for="heavyCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="heavyCount"
-                            placeholder="enter slot count" formControlName="availableSlots">
+                            placeholder="enter slot count" formControlName="hAvailableSlots"
+                            (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.hAvailableSlots">
+                            {{formErrors.hAvailableSlots}}
+                        </div>
 
                     </div>
 
@@ -125,7 +150,11 @@
                         <h5>Bus Configurations: </h5>
                         <label for="busCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="busCount" placeholder="enter slot count"
-                            formControlName="availableSlots">
+                            formControlName="bAvailableSlots" (blur)="logValidationErrors()">
+
+                        <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bAvailableSlots">
+                            {{formErrors.bAvailableSlots}}
+                        </div>
 
                     </div>
 
@@ -137,7 +166,11 @@
                     <h5>Temporary Vehicle Configurations: </h5>
                     <label for="allotedTime">Alloted Time: </label>
                     <input type="number" class="form-control col-sm-6" id="allotedTime" placeholder="enter alloted time"
-                        formControlName="allotedTime">
+                        formControlName="allotedTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.allotedTime">
+                        {{formErrors.allotedTime}}
+                    </div>
 
                 </div>
 
@@ -145,6 +178,6 @@
 
         </div>
 
-        <input type="submit" class="btn btn-dark" value="Update">
+        <input type="submit" class="btn btn-dark" value="Update" [disabled]="updatePremiseConfigForm.invalid">
     </form>
 </div>

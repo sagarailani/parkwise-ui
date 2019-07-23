@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClientPremiseService } from '../client-premise.service';
 
 @Component({
@@ -15,10 +15,44 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
 
     constructor(private fb: FormBuilder, private clientPremiseService: ClientPremiseService) { }
 
+    validationMessages = {
+        'clientUsername': {
+            'required': 'Client Username is required',
+        },
+        'premiseName': {
+            'required': 'Premise Name is required',
+        },
+        'twAvailableSlots': {
+            'required': 'Please specify available slots'
+        },
+        'fwAvailableSlots': {
+            'required': 'Please specify available slots'
+        },
+        'hAvailableSlots': {
+            'required': 'Please specify available slots'
+        },
+        'bAvailableSlots': {
+            'required': 'Please specify available slots'
+        },
+        'allotedTime': {
+            'required': 'Please specify alloted time'
+        }
+    }
+
+    formErrors = {
+        'clientUsername': '',
+        'premiseName': '',
+        'twAvailableSlots': '',
+        'fwAvailableSlots': '',
+        'hAvailableSlots': '',
+        'bAvailableSlots': '',
+        'allotedTime': '',
+    }
+
     ngOnInit() {
         this.updatePremiseConfigForm = this.fb.group({
-            clientUsername: [''],
-            premiseName: [''],
+            clientUsername: ['', Validators.required],
+            premiseName: ['', Validators.required],
             disablePremiseConfig: [''],
             entryTypeRegular: [''],
             entryTypeTemporary: [''],
@@ -27,19 +61,19 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 registered: [''],
                 twoWheeler: [''],
                 twoWheelerGroup: this.fb.group({
-                    availableSlots: [''],
+                    twAvailableSlots: [''],
                 }),
                 fourWheeler: [''],
                 fourWheelerGroup: this.fb.group({
-                    availableSlots: [''],
+                    fwAvailableSlots: [''],
                 }),
                 heavy: [''],
                 heavyGroup: this.fb.group({
-                    availableSlots: [''],
+                    hAvailableSlots: [''],
                 }),
                 bus: [''],
                 busGroup: this.fb.group({
-                    availableSlots: [''],
+                    bAvailableSlots: [''],
                 }),
             }),
             entryTypeTemporaryForm: this.fb.group({
@@ -47,7 +81,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             }),
         })
 
-        console.log(this.clients)
+        // console.log(this.clients)
 
         this.getClients();
         this.updatePremiseConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
@@ -58,6 +92,67 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
         });
         this.patchUpdatedValues();
         console.log(this.updatePremiseConfigForm.controls.disablePremiseConfig.value)
+
+        this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('twoWheeler').valueChanges
+            .subscribe((value) => {
+                let availableSlots = this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('twoWheelerGroup').get('twAvailableSlots');
+                if (value) {
+                    availableSlots.setValidators(Validators.required)
+                } else {
+                    availableSlots.clearValidators();
+                    availableSlots.setErrors({});
+                }
+                availableSlots.updateValueAndValidity();
+            })
+
+        this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('fourWheeler').valueChanges
+            .subscribe((value) => {
+                let availableSlots = this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('fourWheelerGroup').get('fwAvailableSlots');
+                if (value) {
+                    availableSlots.setValidators(Validators.required)
+                } else {
+                    availableSlots.clearValidators();
+                    availableSlots.setErrors({});
+                }
+                availableSlots.updateValueAndValidity();
+            })
+
+        this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('heavy').valueChanges
+            .subscribe((value) => {
+                let availableSlots = this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('heavyGroup').get('hAvailableSlots');
+                if (value) {
+                    availableSlots.setValidators(Validators.required)
+                } else {
+                    availableSlots.clearValidators();
+                    availableSlots.setErrors({});
+                }
+                availableSlots.updateValueAndValidity();
+            })
+
+        this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('bus').valueChanges
+            .subscribe((value) => {
+                let availableSlots = this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('busWheelerGroup').get('bAvailableSlots');
+                if (value) {
+                    availableSlots.setValidators(Validators.required)
+                } else {
+                    availableSlots.clearValidators();
+                    availableSlots.setErrors({});
+                }
+                availableSlots.updateValueAndValidity();
+            })
+
+        this.updatePremiseConfigForm.controls.entryTypeTemporary.valueChanges
+            .subscribe((value) => {
+                let allotedTime = this.updatePremiseConfigForm.controls.entryTypeTemporaryForm.get('allotedTime');
+                if (value) {
+                    allotedTime.setValidators(Validators.required)
+                } else {
+                    allotedTime.clearValidators();
+                    allotedTime.setErrors({})
+                }
+                allotedTime.updateValueAndValidity();
+            })
+
     }
 
     savePremiseConfigData() {
@@ -72,4 +167,31 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
     patchUpdatedValues() {
         this.updatePremiseConfigForm.controls.entryTypeRegular.setValue(true)
     }
+
+    logValidationErrors(group: FormGroup = this.updatePremiseConfigForm) {
+        Object.keys(group.controls).forEach((key: string) => {
+            const abstractControl = group.get(key);
+            if (abstractControl instanceof FormGroup) {
+                this.logValidationErrors(abstractControl)
+            } else {
+                if (abstractControl && abstractControl.invalid && (
+                    abstractControl.touched || abstractControl.dirty
+                )) {
+                    // console.log(key)
+                    this.formErrors[key] = ""
+                    const messages = this.validationMessages[key];
+                    // console.log(key + " : " + messages)
+                    for (const error in abstractControl.errors) {
+                        if (error) {
+                            this.formErrors[key] += messages[error];
+                        }
+                    }
+                } else {
+                    this.formErrors[key] = "";
+                }
+            }
+        })
+        // console.log(this.updatePricingForm)
+    }
+
 }

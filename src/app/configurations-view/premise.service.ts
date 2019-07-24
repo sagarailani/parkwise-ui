@@ -13,5 +13,15 @@ export class PremiseService {
         return this._http.get(environment.apiBaseUrl + "/premise/client/" + clientId)
     }
 
+    createNewPremise(clientId, premiseName): Observable<any> {
+        let dataObj = {
+            'client': {
+                'id': clientId
+            },
+            'name': premiseName
+        }
+
+        return this._http.post(environment.apiBaseUrl + "/premise", dataObj);
+    }
 
 }

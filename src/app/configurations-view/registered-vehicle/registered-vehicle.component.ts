@@ -77,10 +77,10 @@ export class RegisteredVehicleComponent implements OnInit {
         this.registerVehicleForm.controls.premiseName.valueChanges.subscribe((premiseId) => {
             console.log("Printing premiseId: " + premiseId)
             this._premiseConfigService.getRegularConfigs(premiseId)
-                .subscribe((value) => {
-                    console.log(value)
-                    this.premiseConfigs = value;
-                });
+            this._premiseConfigService.eventSubject
+                .subscribe((configs) => {
+                    this.premiseConfigs = configs;
+                })
         })
 
         this.registerVehicleForm.valueChanges.subscribe((value) => {

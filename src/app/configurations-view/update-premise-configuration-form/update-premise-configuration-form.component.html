@@ -9,7 +9,7 @@
             <label>Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
-                    {{client.clientName}}
+                    {{client.username}}
                 </option>
             </select>
 
@@ -22,8 +22,8 @@
         <div class="form-group">
             <label>Premise Name: </label><br>
             <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
-                <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
-                    {{premise.premiseName}}
+                <option *ngFor="let premise of premiseForClient" value="{{premise.id}}">
+                    {{premise.name}}
                 </option>
             </select>
 
@@ -63,18 +63,6 @@
 
                     <h5>Regular Vehicle Configurations</h5>
 
-                    <div id="entryTypeInline" class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
-                            formControlName="pass">
-                        <label class="form-check-label" for="passCheckbox">Pass</label>
-                    </div>
-
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
-                            formControlName="registered">
-                        <label class="form-check-label" for="registeredCheckbox">Registered</label>
-                    </div>
-
                     <div>
                         <label for="entryTypeInline">Vehicle Type:</label> <br>
 
@@ -106,6 +94,19 @@
                     <div formGroupName="twoWheelerGroup"
                         *ngIf="updatePremiseConfigForm.controls.entryTypeRegularForm.controls.twoWheeler.value === true">
                         <h5>Two Wheeler Configurations: </h5>
+
+                        <div id="entryTypeInline" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                                formControlName="pass">
+                            <label class="form-check-label" for="passCheckbox">Pass</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                                formControlName="registered">
+                            <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                        </div><br />
+
                         <label for="twoWheelerCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="twoWheelerCount"
                             placeholder="enter slot count" formControlName="twAvailableSlots"
@@ -120,6 +121,25 @@
                     <div formGroupName="fourWheelerGroup"
                         *ngIf="updatePremiseConfigForm.controls.entryTypeRegularForm.controls.fourWheeler.value === true">
                         <h5>Four Wheeler Configurations: </h5>
+
+                        <div id="entryTypeInline" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                                formControlName="pass">
+                            <label class="form-check-label" for="passCheckbox">Pass</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                                formControlName="registered">
+                            <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="valet" value="valet"
+                                formControlName="valet">
+                            <label class="form-check-label" for="valet">Valet</label>
+                        </div><br>
+
                         <label for="fourWheelerCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="fourWheelerCount"
                             placeholder="enter slot count" formControlName="fwAvailableSlots"
@@ -134,6 +154,19 @@
                     <div formGroupName="heavyGroup"
                         *ngIf="updatePremiseConfigForm.controls.entryTypeRegularForm.controls.heavy.value === true">
                         <h5>Heavy Vehicle Configurations: </h5>
+
+                        <div id="entryTypeInline" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                                formControlName="pass">
+                            <label class="form-check-label" for="passCheckbox">Pass</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                                formControlName="registered">
+                            <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                        </div><br />
+
                         <label for="heavyCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="heavyCount"
                             placeholder="enter slot count" formControlName="hAvailableSlots"
@@ -148,6 +181,19 @@
                     <div formGroupName="busGroup"
                         *ngIf="updatePremiseConfigForm.controls.entryTypeRegularForm.controls.bus.value === true">
                         <h5>Bus Configurations: </h5>
+
+                        <div id="entryTypeInline" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="passCheckbox" value="pass"
+                                formControlName="pass">
+                            <label class="form-check-label" for="passCheckbox">Pass</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="registeredCheckbox" value="registered"
+                                formControlName="registered">
+                            <label class="form-check-label" for="registeredCheckbox">Registered</label>
+                        </div><br />
+
                         <label for="busCount">Slot Count: </label>
                         <input type="number" class="form-control col-sm-6" id="busCount" placeholder="enter slot count"
                             formControlName="bAvailableSlots" (blur)="logValidationErrors()">

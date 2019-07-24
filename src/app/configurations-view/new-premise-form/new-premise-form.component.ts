@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ClientService } from '../client.service';
+import { UserService } from '../user.service';
+import { PremiseService } from '../premise.service';
+import { PremiseConfigService } from '../premise-config.service';
 
 @Component({
     selector: 'app-new-premise-form',
@@ -11,9 +14,12 @@ export class NewPremiseFormComponent implements OnInit {
 
     newPremiseDataInputForm: FormGroup;
 
-    clients;
+    clients: any;
 
-    constructor(private fb: FormBuilder, private _clientService: ClientService) { }
+    constructor(private fb: FormBuilder,
+        private _userService: UserService,
+        private _premiseService: PremiseService,
+        private _premiseConfigService: PremiseConfigService) { }
 
     validationMessages = {
         'clientUsername': {
@@ -147,6 +153,10 @@ export class NewPremiseFormComponent implements OnInit {
                 allotedTime.updateValueAndValidity();
             })
 
+        this._userService.getClients()
+            .subscribe((clients) => {
+                this.clients = clients;
+            })
 
         // this._clientService.getClients()
         //     .subscribe((value) => {
@@ -158,8 +168,85 @@ export class NewPremiseFormComponent implements OnInit {
 
     savePremiseData() {
         console.log(this.newPremiseDataInputForm.value)
-        console.log(this.newPremiseDataInputForm.controls.entryTypeRegular.value)
+        let premiseId;
+        this._premiseService.createNewPremise(this.newPremiseDataInputForm.controls.clientUsername.value
+            , this.newPremiseDataInputForm.controls.premiseName.value)
+            .subscribe((value) => {
+                console.log(value)
+                premiseId = value.id;
+                console.log(premiseId)
+                let formControls = this.newPremiseDataInputForm.controls;
+                let entryTypeFormControls = this.newPremiseDataInputForm.controls.entryTypeRegularForm;
+                if (premiseId !== null) {
+
+                    if (formControls.entryTypeRegular.value === true) {
+                        if (entryTypeFormControls.get('twoWheeler').value === true) {
+                            this._premiseConfigService.createRegularConfig(
+                                entryTypeFormControls.get('twoWheelerGroup').get('twAvailableSlots').value,
+                                '2-Wheeler',
+                                false,
+                                entryTypeFormControls.get('twoWheelerGroup').get('registered').value,
+                                entryTypeFormControls.get('twoWheelerGroup').get('pass').value,
+                                premiseId,
+                                formControls.clientUsername.value
+                            ).subscribe((value) => {
+                                console.log(value)
+                            })
+                        }
+                        if (entryTypeFormControls.get('fourWheeler').value === true) {
+                            this._premiseConfigService.createRegularConfig(
+                                entryTypeFormControls.get('fourWheelerGroup').get('fwAvailableSlots').value,
+                                '4-Wheeler',
+                                entryTypeFormControls.get('fourWheelerGroup').get('valet').value,
+                                entryTypeFormControls.get('fourWheelerGroup').get('registered').value,
+                                entryTypeFormControls.get('fourWheelerGroup').get('pass').value,
+                                premiseId,
+                                formControls.clientUsername.value
+                            ).subscribe((value) => {
+                                console.log(value)
+                            })
+                        }
+                        if (entryTypeFormControls.get('heavy').value === true) {
+                            this._premiseConfigService.createRegularConfig(
+                                entryTypeFormControls.get('heavyGroup').get('hAvailableSlots').value,
+                                'Heavy',
+                                false,
+                                entryTypeFormControls.get('heavyGroup').get('registered').value,
+                                entryTypeFormControls.get('heavyGroup').get('pass').value,
+                                premiseId,
+                                formControls.clientUsername.value
+                            ).subscribe((value) => {
+                                console.log(value)
+                            })
+                        }
+                        if (entryTypeFormControls.get('bus').value === true) {
+                            this._premiseConfigService.createRegularConfig(
+                                entryTypeFormControls.get('busGroup').get('bAvailableSlots').value,
+                                'Bus',
+                                false,
+                                entryTypeFormControls.get('busGroup').get('registered').value,
+                                entryTypeFormControls.get('busGroup').get('pass').value,
+                                premiseId,
+                                formControls.clientUsername.value
+                            ).subscribe((value) => {
+                                console.log(value)
+                            })
+                        }
+                    }
+                    if (formControls.entryTypeTemporary.value === true) {
+                        this._premiseConfigService.createTempConfig(
+                            formControls.entryTypeTemporaryForm.get('allotedTime').value,
+                            premiseId,
+                            formControls.clientUsername.value
+                        ).subscribe((value) => {
+                            console.log(value)
+                        })
+                    }
+                }
+            })
+
     }
+
 
     logValidationErrors(group: FormGroup = this.newPremiseDataInputForm) {
         Object.keys(group.controls).forEach((key: string) => {
@@ -186,5 +273,4 @@ export class NewPremiseFormComponent implements OnInit {
         })
         // console.log(this.updatePricingForm)
     }
-
 }

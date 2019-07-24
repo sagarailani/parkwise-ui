@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user.service';
+import { ClientService } from '../client.service';
 @Component({
     selector: 'app-new-client-form',
     templateUrl: './new-client-form.component.html',
@@ -32,7 +33,10 @@ export class NewClientFormComponent implements OnInit {
     }
 
 
-    constructor(private fb: FormBuilder, private router: Router, private userService: UserService) { }
+    constructor(private fb: FormBuilder,
+        private router: Router,
+        private _userService: UserService,
+        private _clientService: ClientService) { }
 
     ngOnInit() {
         this.clientDataInputForm = this.fb.group({
@@ -47,15 +51,23 @@ export class NewClientFormComponent implements OnInit {
     }
 
     saveClientData() {
-        let isPresent = this.userService.checkForUsername(this.clientDataInputForm.get('username').value)
-        if (isPresent) {
-            this.formErrors['username'] = ""
-            this.formErrors['username'] += this.validationMessages['username']['unique'];
-        } else {
-            this.formErrors['username'] = ""
-            console.log("This data will be sent to Server: ")
-            console.log(this.clientDataInputForm.value)
-        }
+        this._userService.checkForUsername(this.clientDataInputForm.get('username').value)
+            .subscribe((value) => {
+                console.log(value)
+                if (value === false) {
+                    this.formErrors['username'] = ""
+                    this.formErrors['username'] += this.validationMessages['username']['unique'];
+                    return;
+                } else {
+                    this.formErrors['username'] = ""
+                    this._clientService.addClient(this.clientDataInputForm.controls.clientName.value,
+                        this.clientDataInputForm.controls.username.value,
+                        this.clientDataInputForm.controls.password.value)
+                        .subscribe((value) => {
+                            console.log(value)
+                        })
+                }
+            })
     }
 
     logValidationErrors(group: FormGroup = this.clientDataInputForm) {

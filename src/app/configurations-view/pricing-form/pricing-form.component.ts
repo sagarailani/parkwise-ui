@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { UserService } from '../user.service';
+import { PremiseService } from '../premise.service';
+import { PremiseConfigService } from '../premise-config.service';
+import { PricingService } from '../pricing.service';
 
 @Component({
     selector: 'app-pricing-form',
@@ -9,6 +13,18 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 export class PricingFormComponent implements OnInit {
 
     updatePricingForm: FormGroup;
+
+    clients: {}[];
+    premisesForClient: {};
+    premiseConfigs: any;
+    twoWheelerPresent: boolean;
+    twoWheelerConfig: any;
+    fourWheelerPresent: boolean;
+    fourWheelerConfig: any;
+    heavyPresent: boolean;
+    heavyConfig: any;
+    busPresent: boolean;
+    busConfig: any;
 
     validationMessages = {
         'clientUsername': {
@@ -104,7 +120,11 @@ export class PricingFormComponent implements OnInit {
         'bIncrementalTime': '',
     }
 
-    constructor(private fb: FormBuilder) { }
+    constructor(private fb: FormBuilder,
+        private _userService: UserService,
+        private _premiseService: PremiseService,
+        private _premiseConfigService: PremiseConfigService,
+        private _pricingService: PricingService) { }
 
     ngOnInit() {
 
@@ -297,6 +317,36 @@ export class PricingFormComponent implements OnInit {
                 control.updateValueAndValidity();
             })
 
+        this._userService.getClients()
+            .subscribe((clients) => {
+                this.clients = clients;
+                console.log(clients)
+            })
+
+        this.updatePricingForm.controls.clientUsername.valueChanges
+            .subscribe((clientId) => {
+                this._premiseService.getPremises(clientId)
+                    .subscribe((premises) => {
+                        this.premisesForClient = premises;
+                    })
+            })
+
+        this.updatePricingForm.controls.premiseName.valueChanges
+            .subscribe((premiseId) => {
+                this._premiseConfigService.getRegularConfigs(premiseId)
+                this._premiseConfigService.eventSubject
+                    .subscribe((configs) => {
+                        this.twoWheelerPresent = false;
+                        this.fourWheelerPresent = false;
+                        this.busPresent = false;
+                        this.heavyPresent = false;
+                        this.premiseConfigs = configs;
+                        console.log(configs)
+                        for (let config in this.premiseConfigs) {
+                            this.updateFormData(this.premiseConfigs[config]);
+                        }
+                    })
+            })
     }
 
     logValidationErrors(group: FormGroup = this.updatePricingForm) {
@@ -324,5 +374,77 @@ export class PricingFormComponent implements OnInit {
         })
         // console.log(this.updatePricingForm)
     }
+    updateFormData(config) {
+        console.log(config.vehicleType)
+        if (config.vehicleType === '2-Wheeler') {
+            this.twoWheelerPresent = true
+            this.twoWheelerConfig = config;
+        } else if (config.vehicleType === '4-Wheeler') {
+            this.fourWheelerPresent = true
+            this.fourWheelerConfig = config;
+        } else if (config.vehicleType === 'Bus') {
+            this.busPresent = true
+            this.busConfig = config;
+        } else if (config.vehicleType === 'Heavy') {
+            this.heavyPresent = true
+            this.heavyConfig = config;
+        }
+    }
 
+    updatePricingConfigurations() {
+        let formControls = this.updatePricingForm.controls;
+
+        if (formControls.twoWheeler.value === true) {
+            let innerControls = formControls.twoWheelerPriceGroup;
+            this._pricingService.createPricing(
+                innerControls.get('twBasePrice').value,
+                innerControls.get('twBaseTime').value,
+                innerControls.get('twIncrementalPrice').value,
+                innerControls.get('twIncrementalTime').value,
+                formControls.clientUsername.value,
+                this.twoWheelerConfig.id
+            ).subscribe((response) => {
+                console.log(response)
+            })
+        }
+        if (formControls.fourWheeler.value === true) {
+            let controls = formControls.fourWheelerPriceGroup;
+            this._pricingService.createPricing(
+                controls.get('fwBasePrice').value,
+                controls.get('fwBaseTime').value,
+                controls.get('fwIncrementalPrice').value,
+                controls.get('fwIncrementalTime').value,
+                formControls.clientUsername.value,
+                this.fourWheelerConfig.id
+            ).subscribe((response) => {
+                console.log(response)
+            })
+        }
+        if (formControls.heavy.value === true) {
+            let controls = formControls.heavyPriceGroup;
+            this._pricingService.createPricing(
+                controls.get('hBasePrice').value,
+                controls.get('hBaseTime').value,
+                controls.get('hIncrementalPrice').value,
+                controls.get('hIncrementalTime').value,
+                formControls.clientUsername.value,
+                this.heavyConfig.id
+            ).subscribe((response) => {
+                console.log(response)
+            })
+        }
+        if (formControls.bus.value === true) {
+            let controls = formControls.busPriceGroup;
+            this._pricingService.createPricing(
+                controls.get('bBasePrice').value,
+                controls.get('bBaseTime').value,
+                controls.get('bIncrementalPrice').value,
+                controls.get('bIncrementalTime').value,
+                formControls.clientUsername.value,
+                this.busConfig.id
+            ).subscribe((response) => {
+                console.log(response)
+            })
+        }
+    }
 }

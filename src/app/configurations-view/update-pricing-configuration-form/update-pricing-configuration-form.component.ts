@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { UserService } from '../user.service';
+import { PremiseService } from '../premise.service';
+import { PremiseConfigService } from '../premise-config.service';
+import { PricingService } from '../pricing.service';
 @Component({
     selector: 'app-update-pricing-configuration-form',
     templateUrl: './update-pricing-configuration-form.component.html',
@@ -10,7 +13,16 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
 
     updatePriceConfigForm: FormGroup;
     clients: {}[];
-    premiseForClient: {}[];
+    premiseForClient: {};
+
+    twoWheelerPresent: boolean;
+    twoWheelerConfig;
+    fourWheelerPresent: boolean;
+    fourWheelerConfig;
+    busPresent: boolean;
+    busConfig;
+    heavyPresent: boolean;
+    heavyConfig;
 
     validationMessages = {
         'clientUsername': {
@@ -107,7 +119,12 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
     }
 
 
-    constructor(private fb: FormBuilder) { }
+    constructor(
+        private fb: FormBuilder,
+        private _userService: UserService,
+        private _premiseService: PremiseService,
+        private _premiseConfigService: PremiseConfigService,
+        private _pricingService: PricingService) { }
 
     ngOnInit() {
         this.updatePriceConfigForm = this.fb.group({
@@ -148,21 +165,30 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             })
         });
 
-        // console.log(this.clients)
+        this._userService.getClients()
+            .subscribe((clients) => {
+                this.clients = clients;
+            })
 
+        this.updatePriceConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
+            console.log("Printing clientId: " + clientId);
+            this._premiseService.getPremises(clientId)
+                .subscribe((premises) => {
+                    this.premiseForClient = premises;
+                })
+        });
 
-        // this.updatePriceConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
-        //     console.log("Printing clientId: " + clientId);
-        //     this.clientPremiseService.getPremiseForClient(clientId)
-        //         .subscribe(premises => this.premiseForClient = premises)
-        //     console.log(this.premiseForClient)
-        // });
-
-        this.updatePriceConfigForm.controls.disablePriceConfig.valueChanges.subscribe((value) => {
-            if (value) {
-                //Disable all validations inside the form
-            }
-        })
+        this.updatePriceConfigForm.controls.premiseName.valueChanges
+            .subscribe((premiseId) => {
+                this._premiseConfigService.getRegularConfigs(premiseId)
+                this._premiseConfigService.eventSubject.subscribe((configs) => {
+                    console.log(configs)
+                    this.clearFormValues();
+                    for (let config in configs) {
+                        this.updateFormData(configs[config]);
+                    }
+                })
+            })
 
         this.updatePriceConfigForm.controls.twoWheeler.valueChanges
             .subscribe((value) => {
@@ -321,10 +347,126 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
 
     savePriceConfigData() {
         console.log(this.updatePriceConfigForm.value)
-    }
-
-    patchUpdatedValues() {
-        this.updatePriceConfigForm.controls.entryTypeRegular.setValue(true)
+        let formControls = this.updatePriceConfigForm.controls;
+        if (formControls.disablePriceConfig.value === true) {
+            if (this.twoWheelerPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.twoWheelerConfig.id,
+                    this.twoWheelerConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (this.fourWheelerPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.fourWheelerConfig.id,
+                    this.fourWheelerConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (this.busPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.busConfig.id,
+                    this.busConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (this.heavyPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.heavyConfig.id,
+                    this.heavyConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+        } else {
+            if (formControls.twoWheeler.value === true) {
+                this._pricingService.createPricing(
+                    formControls.twoWheelerPriceGroup.get('twBasePrice').value,
+                    formControls.twoWheelerPriceGroup.get('twBaseTime').value,
+                    formControls.twoWheelerPriceGroup.get('twIncrementalPrice').value,
+                    formControls.twoWheelerPriceGroup.get('twIncrementalTime').value,
+                    formControls.premiseName.value,
+                    this.twoWheelerConfig.id
+                ).subscribe((response) => {
+                    console.log(response);
+                })
+            } else if (formControls.twoWheeler.value === false && this.twoWheelerPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.twoWheelerConfig.id,
+                    this.twoWheelerConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (formControls.fourWheeler.value === true) {
+                this._pricingService.createPricing(
+                    formControls.fourWheelerPriceGroup.get('fwBasePrice').value,
+                    formControls.fourWheelerPriceGroup.get('fwBaseTime').value,
+                    formControls.fourWheelerPriceGroup.get('fwIncrementalPrice').value,
+                    formControls.fourWheelerPriceGroup.get('fwIncrementalTime').value,
+                    formControls.premiseName.value,
+                    this.fourWheelerConfig.id
+                ).subscribe((response) => {
+                    console.log(response);
+                })
+            } else if (formControls.fourWheeler.value === false && this.fourWheelerPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.fourWheelerConfig.id,
+                    this.fourWheelerConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (formControls.bus.value === true) {
+                this._pricingService.createPricing(
+                    formControls.busPriceGroup.get('bBasePrice').value,
+                    formControls.busPriceGroup.get('bBaseTime').value,
+                    formControls.busPriceGroup.get('bIncrementalPrice').value,
+                    formControls.busPriceGroup.get('bIncrementalTime').value,
+                    formControls.premiseName.value,
+                    this.busConfig.id
+                ).subscribe((response) => {
+                    console.log(response);
+                })
+            } else if (formControls.bus.value === false && this.busPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.busConfig.id,
+                    this.busConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+            if (formControls.heavy.value === true) {
+                this._pricingService.createPricing(
+                    formControls.heavyPriceGroup.get('hBasePrice').value,
+                    formControls.heavyPriceGroup.get('hBaseTime').value,
+                    formControls.heavyPriceGroup.get('hIncrementalPrice').value,
+                    formControls.heavyPriceGroup.get('hIncrementalTime').value,
+                    formControls.premiseName.value,
+                    this.heavyConfig.id
+                ).subscribe((response) => {
+                    console.log(response);
+                })
+            } else if (formControls.heavy.value === false && this.heavyPresent) {
+                this._pricingService.disablePricingConfig(
+                    formControls.premiseName.value,
+                    this.heavyConfig.id,
+                    this.heavyConfig.incrementPricing.id,
+                ).subscribe((response) => {
+                    console.log(response)
+                })
+            }
+        }
     }
 
     logValidationErrors(group: FormGroup = this.updatePriceConfigForm) {
@@ -351,6 +493,90 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             }
         })
         // console.log(this.updatePriceConfigForm)
+    }
+
+    updateFormData(config) {
+        if (config.vehicleType === '2-Wheeler') {
+            this.twoWheelerPresent = true;
+            this.twoWheelerConfig = config;
+            let formControls = this.updatePriceConfigForm.controls.twoWheelerPriceGroup;
+            this.updatePriceConfigForm.controls.twoWheeler.setValue(true)
+            if (config.incrementPricing.incrementTime === 0) {
+                formControls.get('twoWheelerPricingStrategy').setValue('fixed')
+            } else {
+                formControls.get('twoWheelerPricingStrategy').setValue('incremental')
+            }
+            formControls.get('twBaseTime').setValue(config.incrementPricing.baseTime);
+            formControls.get('twBasePrice').setValue(config.incrementPricing.baseCost);
+            formControls.get('twIncrementalTime').setValue(config.incrementPricing.incrementTime);
+            formControls.get('twIncrementalPrice').setValue(config.incrementPricing.incrementCost);
+        }
+        if (config.vehicleType === '4-Wheeler') {
+            this.fourWheelerPresent = true;
+            this.fourWheelerConfig = config;
+            let formControls = this.updatePriceConfigForm.controls.fourWheelerPriceGroup;
+            this.updatePriceConfigForm.controls.fourWheeler.setValue(true)
+            if (config.incrementPricing.incrementTime === 0) {
+                formControls.get('fourWheelerPricingStrategy').setValue('fixed')
+            } else {
+                formControls.get('fourWheelerPricingStrategy').setValue('incremental')
+            }
+            formControls.get('fwBaseTime').setValue(config.incrementPricing.baseTime);
+            formControls.get('fwBasePrice').setValue(config.incrementPricing.baseCost);
+            formControls.get('fwIncrementalTime').setValue(config.incrementPricing.incrementTime);
+            formControls.get('fwIncrementalPrice').setValue(config.incrementPricing.incrementCost);
+        }
+        if (config.vehicleType === 'Heavy') {
+            this.heavyPresent = true;
+            this.heavyConfig = config;
+            let formControls = this.updatePriceConfigForm.controls.heavyPriceGroup;
+            this.updatePriceConfigForm.controls.heavy.setValue(true)
+            if (config.incrementPricing.incrementTime === 0) {
+                formControls.get('heavyPricingStrategy').setValue('fixed')
+            } else {
+                formControls.get('heavyPricingStrategy').setValue('incremental')
+            }
+            formControls.get('hBaseTime').setValue(config.incrementPricing.baseTime);
+            formControls.get('hBasePrice').setValue(config.incrementPricing.baseCost);
+            formControls.get('hIncrementalTime').setValue(config.incrementPricing.incrementTime);
+            formControls.get('hIncrementalPrice').setValue(config.incrementPricing.incrementCost);
+        }
+        if (config.vehicleType === 'Bus') {
+            this.busPresent = true;
+            this.busConfig = config;
+            let formControls = this.updatePriceConfigForm.controls.twoWheelerPriceGroup;
+            this.updatePriceConfigForm.controls.twoWheeler.setValue(true)
+            if (config.incrementPricing.incrementTime === 0) {
+                formControls.get('busPricingStrategy').setValue('fixed')
+            } else {
+                formControls.get('busPricingStrategy').setValue('incremental')
+            }
+            formControls.get('bBaseTime').setValue(config.incrementPricing.baseTime);
+            formControls.get('bBasePrice').setValue(config.incrementPricing.baseCost);
+            formControls.get('bIncrementalTime').setValue(config.incrementPricing.incrementTime);
+            formControls.get('bIncrementalPrice').setValue(config.incrementPricing.incrementCost);
+        }
+    }
+
+    clearRecursively(form: FormGroup) {
+        Object.keys(form.controls).forEach((key: string) => {
+            let flag = true;
+            if (key === 'clientUsername' || key === 'premiseName') {
+                flag = false;
+            }
+            if (flag === true) {
+                const abstractControl = form.get(key);
+                if (abstractControl instanceof FormGroup) {
+                    this.clearRecursively(abstractControl)
+                } else {
+                    abstractControl.setValue('');
+                }
+            }
+        })
+    }
+    clearFormValues() {
+        console.log("form values are cleared")
+        this.clearRecursively((this.updatePriceConfigForm));
     }
 
 }

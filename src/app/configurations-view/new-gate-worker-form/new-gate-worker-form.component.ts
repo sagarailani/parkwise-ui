@@ -74,7 +74,7 @@ export class NewGateWorkerFormComponent implements OnInit {
     }
 
     saveGateWorkerData() {
-        let present = this._userService.checkForUsername(this.addGateWorkerForm.get('username').value)
+        this._userService.checkForUsername(this.addGateWorkerForm.get('username').value)
             .subscribe((value) => {
                 console.log(value)
                 if (value === false) {

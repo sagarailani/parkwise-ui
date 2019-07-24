@@ -15,4 +15,12 @@ export class ClientService {
         return this._http.get(environment.apiBaseUrl + "/client")
     }
 
+    addClient(name, username, password): Observable<{}> {
+        let dataObj = {
+            'name': name,
+            'username': username,
+            'password': password
+        }
+        return this._http.post(environment.apiBaseUrl + '/user/owner', dataObj)
+    }
 }

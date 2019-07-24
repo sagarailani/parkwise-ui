@@ -9,7 +9,7 @@
             <label>Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
-                    {{client.clientName}}
+                    {{client.username}}
                 </option>
             </select>
 
@@ -22,8 +22,8 @@
         <div class="form-group">
             <label>Premise Name: </label><br>
             <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
-                <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
-                    {{premise.premiseName}}
+                <option *ngFor="let premise of premiseForClient" value="{{premise.id}}">
+                    {{premise.name}}
                 </option>
             </select>
 
@@ -43,7 +43,7 @@
 
             <!-- 2 Wheeler Code -->
 
-            <div class="form-check">
+            <div class="form-check" *ngIf="twoWheelerPresent === true">
                 <input class="form-check-input" type="checkbox" id="twoWheeler" value="twoWheeler"
                     formControlName="twoWheeler">
                 <label class="form-check-label" for="twoWheeler">2 Wheeler</label>
@@ -126,7 +126,7 @@
 
             <!-- 4 Wheeler Code -->
 
-            <div class="form-check">
+            <div class="form-check" *ngIf="fourWheelerPresent === true">
                 <input class="form-check-input" type="checkbox" id="fourWheeler" value="fourWheeler"
                     formControlName="fourWheeler">
                 <label class="form-check-label" for="fourWheeler">4 Wheeler</label>
@@ -208,7 +208,7 @@
 
             <!-- Heavy Vehicle Code -->
 
-            <div class="form-check">
+            <div class="form-check" *ngIf="heavyPresent === true">
                 <input class="form-check-input" type="checkbox" id="heavy" value="heavy" formControlName="heavy">
                 <label class="form-check-label" for="heavy">Heavy Vehicle</label>
                 <br>
@@ -296,7 +296,7 @@
 
             <!-- Bus Vehicle Code -->
 
-            <div class="form-check">
+            <div class="form-check" *ngIf="busPresent === true">
                 <input class="form-check-input" type="checkbox" id="bus" value="bus" formControlName="bus">
                 <label class="form-check-label" for="heavy">Bus</label>
                 <br>

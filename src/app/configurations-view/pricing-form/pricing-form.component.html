@@ -8,9 +8,9 @@
         <div class="form-group">
             <label>Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
-                <!-- <option *ngFor="let client of clients" value="{{client.clientId}}">
-                    {{client.clientName}}
-                </option> -->
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.username}}
+                </option>
             </select>
             <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
                 {{formErrors.clientUsername}}
@@ -21,9 +21,9 @@
         <div class="form-group">
             <label>Premise Name: </label><br>
             <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
-                <!-- <option *ngFor="let premise of premiseForClient" value="{{premise.premiseId}}">
-                    {{premise.premiseName}}
-                </option> -->
+                <option *ngFor="let premise of premisesForClient" value="{{premise.id}}">
+                    {{premise.name}}
+                </option>
             </select>
 
             <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
@@ -34,7 +34,7 @@
 
         <!-- 2 Wheeler Code -->
 
-        <div class="form-check">
+        <div class="form-check" *ngIf="twoWheelerPresent === true">
             <input class="form-check-input" type="checkbox" id="twoWheeler" value="twoWheeler"
                 formControlName="twoWheeler">
             <label class="form-check-label" for="twoWheeler">2 Wheeler</label>
@@ -68,7 +68,7 @@
                     *ngIf="updatePricingForm.controls.twoWheelerPriceGroup.controls.twoWheelerPricingStrategy.value === 'incremental'">
                     <label for="baseTime">Base Time: </label>
                     <input type="number" class="form-control col-sm-6" id="baseTime" placeholder="Enter Base Time"
-                        formControlName="twBaseTime" (blur)="logValidationErrors()">
+                        formControlName="twBaseTime" (blur)="logValidationErrors()" default>
 
                     <div class="alert alert-danger col-sm-6" *ngIf="formErrors.twBaseTime">
                         {{formErrors.twBaseTime}}
@@ -117,7 +117,7 @@
 
         <!-- 4 Wheeler Code -->
 
-        <div class="form-check">
+        <div class="form-check" *ngIf="fourWheelerPresent === true">
             <input class="form-check-input" type="checkbox" id="fourWheeler" value="fourWheeler"
                 formControlName="fourWheeler">
             <label class="form-check-label" for="fourWheeler">4 Wheeler</label>
@@ -198,7 +198,7 @@
 
         <!-- Heavy Vehicle Code -->
 
-        <div class="form-check">
+        <div class="form-check" *ngIf="heavyPresent === true">
             <input class="form-check-input" type="checkbox" id="heavy" value="heavy" formControlName="heavy">
             <label class="form-check-label" for="heavy">Heavy Vehicle</label>
             <br>
@@ -286,7 +286,7 @@
 
         <!-- Bus Vehicle Code -->
 
-        <div class="form-check">
+        <div class="form-check" *ngIf="busPresent === true">
             <input class="form-check-input" type="checkbox" id="bus" value="bus" formControlName="bus">
             <label class="form-check-label" for="heavy">Bus</label>
             <br>

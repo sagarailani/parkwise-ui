@@ -8,10 +8,12 @@ import { AppComponent } from './app.component';
 import { GateWorkerViewModule } from './gate-worker-view/gate-worker-view.module';
 import { ConfigurationsViewModule } from './configurations-view/configurations-view.module';
 import { HttpClientModule } from '@angular/common/http';
+import { TitleBarComponent } from './title-bar/title-bar.component';
 
 @NgModule({
     declarations: [
         AppComponent,
+        TitleBarComponent,
     ],
     imports: [
         BrowserModule,

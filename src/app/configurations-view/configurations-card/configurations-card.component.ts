@@ -38,6 +38,8 @@ export class ConfigurationsCardComponent implements OnInit {
                 break;
             case "Pricing Configuration": this.router.navigate(['pricing-config'], { relativeTo: this.route })
                 break;
+            case "Pass Configurations": this.router.navigate(['pass-config'], { relativeTo: this.route })
+                break;
 
         }
     }

@@ -1,0 +1,476 @@
+<div class="container">
+
+    <h3>Create a new Pass Configuration</h3>
+    <hr />
+
+    <form [formGroup]="passConfigForm" class="form-content" (ngSubmit)="savePassConfigData()">
+
+        <div class="form-group">
+            <label>Client Username: </label><br>
+            <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.username}}
+                </option>
+            </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.clientUsername">
+                {{formErrors.clientUsername}}
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>Premise Name: </label><br>
+            <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
+                <option *ngFor="let premise of premisesForClient" value="{{premise.id}}">
+                    {{premise.name}}
+                </option>
+            </select>
+
+            <div class="alert alert-danger col-sm-6" *ngIf="formErrors.premiseName">
+                {{formErrors.premiseName}}
+            </div>
+        </div>
+
+        <!-- 2 Wheeler Pass Code -->
+
+        <div class="form-check" *ngIf="twoWheelerPresent === true">
+            <input class="form-check-input" type="checkbox" id="twoWheeler" value="twoWheeler"
+                formControlName="twoWheeler">
+            <label class="form-check-label" for="twoWheeler">2 Wheeler</label>
+            <br>
+        </div>
+
+        <div formGroupName="twoWheelerGroup" *ngIf="passConfigForm.controls.twoWheeler.value === true">
+
+            <h5>Two Wheeler Pass Configurations</h5>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="twWeek" value="week" formControlName="twWeek">
+                <label class="form-check-label" for="twWeek">Week</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.twoWheelerGroup.get('twWeek').value === true">
+
+                <div class="form-group">
+                    <label for="twWeekPrice">Week's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="twWeekPrice" placeholder="Enter Price"
+                        formControlName="twWeekPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twWeekPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="twWeekTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="twWeekTime" placeholder="Enter Duration"
+                        formControlName="twWeekTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twWeekTime}}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="twMonth" value="month" formControlName="twMonth">
+                <label class="form-check-label" for="twMonth">Month</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.twoWheelerGroup.get('twMonth').value === true">
+
+                <div class="form-group">
+                    <label for="twMonthPrice">Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="twMonthPrice" placeholder="Enter Price"
+                        formControlName="twMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="twMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="twMonthTime" placeholder="Enter Duration"
+                        formControlName="twMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="twSixMonth" value="twSixMonth"
+                    formControlName="twSixMonth">
+                <label class="form-check-label" for="twSixMonth">6 Months</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.twoWheelerGroup.get('twSixMonth').value === true">
+
+                <div class="form-group">
+                    <label for="twSixMonthPrice">6 Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="twSixMonthPrice" placeholder="Enter Price"
+                        formControlName="twSixMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twSixMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="twSixMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="twSixMonthTime" placeholder="Enter Duration"
+                        formControlName="twSixMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.twSixMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- 4 Wheeler Pass Code -->
+
+        <div class="form-check" *ngIf="fourWheelerPresent === true">
+            <input class="form-check-input" type="checkbox" id="fourWheeler" value="fourWheeler"
+                formControlName="fourWheeler">
+            <label class="form-check-label" for="fourWheeler">4 Wheeler</label>
+            <br>
+        </div>
+
+        <div formGroupName="fourWheelerGroup" *ngIf="passConfigForm.controls.fourWheeler.value === true">
+
+            <h5>Four Wheeler Pass Configurations</h5>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fwWeek" value="week" formControlName="fwWeek">
+                <label class="form-check-label" for="fwWeek">Week</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.fourWheelerGroup.get('fwWeek').value === true">
+
+                <div class="form-group">
+                    <label for="fwWeekPrice">Week's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwWeekPrice" placeholder="Enter Price"
+                        formControlName="fwWeekPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwWeekPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="fwWeekTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwWeekTime" placeholder="Enter Duration"
+                        formControlName="fwWeekTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwWeekTime}}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fwMonth" value="month" formControlName="fwMonth">
+                <label class="form-check-label" for="fwMonth">Month</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.fourWheelerGroup.get('fwMonth').value === true">
+
+                <div class="form-group">
+                    <label for="fwMonthPrice">Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwMonthPrice" placeholder="Enter Price"
+                        formControlName="fwMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="fwMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwMonthTime" placeholder="Enter Duration"
+                        formControlName="fwMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="fwSixMonth" value="fwSixMonth"
+                    formControlName="fwSixMonth">
+                <label class="form-check-label" for="fwSixMonth">6 Months</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.fourWheelerGroup.get('fwSixMonth').value === true">
+
+                <div class="form-group">
+                    <label for="fwSixMonthPrice">6 Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwSixMonthPrice" placeholder="Enter Price"
+                        formControlName="fwSixMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwSixMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="fwSixMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="fwSixMonthTime" placeholder="Enter Duration"
+                        formControlName="fwSixMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.fwSixMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Heavy Pass Config -->
+
+        <div class="form-check" *ngIf="heavyPresent === true">
+            <input class="form-check-input" type="checkbox" id="heavy" value="heavy" formControlName="heavy">
+            <label class="form-check-label" for="heavy">Heavy Vehicle</label>
+            <br>
+        </div>
+
+        <div formGroupName="heavyGroup" *ngIf="passConfigForm.controls.heavy.value === true">
+
+            <h5>Heavy Vehicle Pass Configurations</h5>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hWeek" value="week" formControlName="hWeek">
+                <label class="form-check-label" for="hWeek">Week</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.heavyGroup.get('hWeek').value === true">
+
+                <div class="form-group">
+                    <label for="hWeekPrice">Week's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="hWeekPrice" placeholder="Enter Price"
+                        formControlName="hWeekPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hWeekPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="hWeekTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="hWeekTime" placeholder="Enter Duration"
+                        formControlName="hWeekTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hWeekTime}}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hMonth" value="month" formControlName="hMonth">
+                <label class="form-check-label" for="hMonth">Month</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.heavyGroup.get('hMonth').value === true">
+
+                <div class="form-group">
+                    <label for="hMonthPrice">Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="hMonthPrice" placeholder="Enter Price"
+                        formControlName="hMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="hMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="hMonthTime" placeholder="Enter Duration"
+                        formControlName="hMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hSixMonth" value="hSixMonth"
+                    formControlName="hSixMonth">
+                <label class="form-check-label" for="hSixMonth">6 Months</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.heavyGroup.get('hSixMonth').value === true">
+
+                <div class="form-group">
+                    <label for="hSixMonthPrice">6 Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="hSixMonthPrice" placeholder="Enter Price"
+                        formControlName="hSixMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hSixMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="hSixMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="hSixMonthTime" placeholder="Enter Duration"
+                        formControlName="hSixMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.hSixMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Bus Pass Config -->
+
+        <div class="form-check" *ngIf="busPresent === true">
+            <input class="form-check-input" type="checkbox" id="bus" value="bus" formControlName="bus">
+            <label class="form-check-label" for="bus">Bus</label>
+            <br />
+        </div>
+
+        <div formGroupName="busGroup" *ngIf="passConfigForm.controls.bus.value === true">
+
+            <h5>Heavy Vehicle Pass Configurations</h5>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bWeek" value="week" formControlName="bWeek">
+                <label class="form-check-label" for="bWeek">Week</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.busGroup.get('bWeek').value === true">
+
+                <div class="form-group">
+                    <label for="bWeekPrice">Week's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="bWeekPrice" placeholder="Enter Price"
+                        formControlName="bWeekPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bWeekPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="bWeekTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="bWeekTime" placeholder="Enter Duration"
+                        formControlName="bWeekTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bWeekTime}}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bMonth" value="month" formControlName="bMonth">
+                <label class="form-check-label" for="bMonth">Month</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.busGroup.get('bMonth').value === true">
+
+                <div class="form-group">
+                    <label for="bMonthPrice">Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="bMonthPrice" placeholder="Enter Price"
+                        formControlName="bMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="bMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="bMonthTime" placeholder="Enter Duration"
+                        formControlName="bMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="bSixMonth" value="bSixMonth"
+                    formControlName="bSixMonth">
+                <label class="form-check-label" for="bSixMonth">6 Months</label>
+                <br>
+            </div>
+
+            <div class="form-group" *ngIf="passConfigForm.controls.busGroup.get('bSixMonth').value === true">
+
+                <div class="form-group">
+                    <label for="bSixMonthPrice">6 Month's Price: </label>
+                    <input type="number" class="form-control col-sm-6" id="bSixMonthPrice" placeholder="Enter Price"
+                        formControlName="bSixMonthPrice" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bSixMonthPrice}}
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="bSixMonthTime">Duration: </label>
+                    <input type="number" class="form-control col-sm-6" id="bSixMonthTime" placeholder="Enter Duration"
+                        formControlName="bSixMonthTime" (blur)="logValidationErrors()">
+
+                    <div class="alert alert-danger col-sm-6" *ngIf="formErrors.bIncrementalPrice">
+                        {{formErrors.bSixMonthTime}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <input type="submit" class="btn btn-dark" [disabled]="passConfigForm.invalid">
+    </form>
+</div>

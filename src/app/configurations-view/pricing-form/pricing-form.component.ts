@@ -374,6 +374,7 @@ export class PricingFormComponent implements OnInit {
         })
         // console.log(this.updatePricingForm)
     }
+
     updateFormData(config) {
         console.log(config.vehicleType)
         if (config.vehicleType === '2-Wheeler') {

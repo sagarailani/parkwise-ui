@@ -12,6 +12,7 @@ import { GeneratePassFormComponent } from './generate-pass-form/generate-pass-fo
 import { GateFormComponent } from './gate-form/gate-form.component';
 import { RegisteredVehicleComponent } from './registered-vehicle/registered-vehicle.component';
 import { UpdatePricingConfigurationFormComponent } from './update-pricing-configuration-form/update-pricing-configuration-form.component';
+import { PassConfigFormComponent } from './pass-config-form/pass-config-form.component';
 
 const routes: Routes = [
     {
@@ -59,6 +60,10 @@ const routes: Routes = [
             {
                 path: 'pricing-config',
                 component: UpdatePricingConfigurationFormComponent,
+            },
+            {
+                path: 'pass-config',
+                component: PassConfigFormComponent
             }
         ]
     },

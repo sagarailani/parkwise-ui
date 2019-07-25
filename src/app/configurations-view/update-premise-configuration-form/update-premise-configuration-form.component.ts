@@ -217,7 +217,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     if (this.twoWheelerConfig.incrementPricing === null) {
                         this._premiseConfigService.updatePremiseRegularConfig(
                             innerControls.get('twoWheelerGroup').get('twAvailableSlots').value,
-                            '2-Wheeler',
+                            '2-WHEELER',
                             false,
                             innerControls.get('twoWheelerGroup').get('registered').value,
                             innerControls.get('twoWheelerGroup').get('pass').value,
@@ -229,7 +229,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     } else {
                         this._premiseConfigService.updatePremiseRegularConfigWithPrice(
                             innerControls.get('twoWheelerGroup').get('twAvailableSlots').value,
-                            '2-Wheeler',
+                            '2-WHEELER',
                             false,
                             innerControls.get('twoWheelerGroup').get('registered').value,
                             innerControls.get('twoWheelerGroup').get('pass').value,
@@ -243,7 +243,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 } else {
                     this._premiseConfigService.createRegularConfig(
                         innerControls.get('twoWheelerGroup').get('twAvailableSlots').value,
-                        '2-Wheeler',
+                        '2-WHEELER',
                         false,
                         innerControls.get('twoWheelerGroup').get('registered').value,
                         innerControls.get('twoWheelerGroup').get('pass').value,
@@ -262,7 +262,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     if (this.fourWheelerConfig.incrementPricing === null) {
                         this._premiseConfigService.updatePremiseRegularConfig(
                             innerControls.get('fourWheelerGroup').get('fwAvailableSlots').value,
-                            '4-Wheeler',
+                            '4-WHEELER',
                             innerControls.get('fourWheelerGroup').get('valet').value,
                             innerControls.get('fourWheelerGroup').get('registered').value,
                             innerControls.get('fourWheelerGroup').get('pass').value,
@@ -274,7 +274,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     } else {
                         this._premiseConfigService.updatePremiseRegularConfigWithPrice(
                             innerControls.get('fourWheelerGroup').get('fwAvailableSlots').value,
-                            '4-Wheeler',
+                            '4-WHEELER',
                             innerControls.get('fourWheelerGroup').get('valet').value,
                             innerControls.get('fourWheelerGroup').get('registered').value,
                             innerControls.get('fourWheelerGroup').get('pass').value,
@@ -288,7 +288,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 } else {
                     this._premiseConfigService.createRegularConfig(
                         innerControls.get('fourWheelerGroup').get('fwAvailableSlots').value,
-                        '4-Wheeler',
+                        '4-WHEELER',
                         innerControls.get('fourWheelerGroup').get('valet').value,
                         innerControls.get('fourWheelerGroup').get('registered').value,
                         innerControls.get('fourWheelerGroup').get('pass').value,
@@ -307,7 +307,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     if (this.heavyConfig.incrementPricing === null) {
                         this._premiseConfigService.updatePremiseRegularConfig(
                             innerControls.get('heavyGroup').get('hAvailableSlots').value,
-                            'Heavy',
+                            'HEAVY',
                             false,
                             innerControls.get('heavyGroup').get('registered').value,
                             innerControls.get('heavyGroup').get('pass').value,
@@ -319,7 +319,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     } else {
                         this._premiseConfigService.updatePremiseRegularConfigWithPrice(
                             innerControls.get('heavyGroup').get('hAvailableSlots').value,
-                            'Heavy',
+                            'HEAVY',
                             false,
                             innerControls.get('heavyGroup').get('registered').value,
                             innerControls.get('heavyGroup').get('pass').value,
@@ -333,7 +333,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 } else {
                     this._premiseConfigService.createRegularConfig(
                         innerControls.get('heavyGroup').get('hAvailableSlots').value,
-                        'Heavy',
+                        'HEAVY',
                         false,
                         innerControls.get('heavyGroup').get('registered').value,
                         innerControls.get('heavyGroup').get('pass').value,
@@ -352,7 +352,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     if (this.busConfig.incrementPricing === null) {
                         this._premiseConfigService.updatePremiseRegularConfig(
                             innerControls.get('busGroup').get('bAvailableSlots').value,
-                            'Bus',
+                            'BUS',
                             false,
                             innerControls.get('busGroup').get('registered').value,
                             innerControls.get('busGroup').get('pass').value,
@@ -364,7 +364,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                     } else {
                         this._premiseConfigService.updatePremiseRegularConfigWithPrice(
                             innerControls.get('busGroup').get('bAvailableSlots').value,
-                            'Bus',
+                            'BUS',
                             false,
                             innerControls.get('busGroup').get('registered').value,
                             innerControls.get('busGroup').get('pass').value,
@@ -378,7 +378,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 } else {
                     this._premiseConfigService.createRegularConfig(
                         innerControls.get('busGroup').get('bAvailableSlots').value,
-                        'Bus',
+                        'BUS',
                         false,
                         innerControls.get('busGroup').get('registered').value,
                         innerControls.get('busGroup').get('pass').value,
@@ -468,7 +468,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             this.temporaryActive = true;
             this.temporaryActive = false;
         }
-        if ((config.vehicleType == "2-Wheeler") && (config.active === true)) {
+        if ((config.vehicleType == "2-WHEELER") && (config.active === true)) {
             console.log('2W true is executed')
             let formControls = this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('twoWheelerGroup');
             this.updatePremiseConfigForm.controls.entryTypeRegularForm.get('twoWheeler').setValue(true);
@@ -480,13 +480,13 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             this.twoWheelerActive = true
             this.twoWheelerConfig = config
         }
-        if (config.vehicleType === '2-Wheeler' && config.active == false) {
+        if (config.vehicleType === '2-WHEELER' && config.active == false) {
             console.log('2W false is executed')
             this.twoWheelerPresent = true
             this.twoWheelerActive = false;
             this.twoWheelerConfig = config
         }
-        if (config.vehicleType === '4-Wheeler' && config.active == true) {
+        if (config.vehicleType === '4-WHEELER' && config.active == true) {
             console.log('4W true is executed')
             this.fourWheelerActive = true
             this.fourWheelerPresent = true
@@ -498,13 +498,13 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             formControls.get('registered').setValue(config.registrationRequired)
             formControls.get('fwAvailableSlots').setValue(config.maxCount)
         }
-        if (config.vehicleType === '4-Wheeler' && config.active == false) {
+        if (config.vehicleType === '4-WHEELER' && config.active == false) {
             console.log('4W false is executed')
             this.fourWheelerPresent = true
             this.fourWheelerActive = false
             this.fourWheelerConfig = config
         }
-        if (config.vehicleType === 'Heavy' && config.active == true) {
+        if (config.vehicleType === 'HEAVY' && config.active == true) {
             console.log('h true is executed')
             this.heavyActive = true;
             this.heavyPresent = true;
@@ -515,13 +515,13 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             formControls.get('registered').setValue(config.registrationRequired)
             formControls.get('hAvailableSlots').setValue(config.maxCount)
         }
-        if (config.vehicleType === 'Heavy' && config.active == false) {
+        if (config.vehicleType === 'HEAVY' && config.active == false) {
             console.log('h false is executed')
             this.heavyPresent = true;
             this.heavyActive = false;
             this.heavyConfig = config;
         }
-        if (config.vehicleType === 'Bus' && config.active == true) {
+        if (config.vehicleType === 'BUS' && config.active == true) {
             console.log('b true is executed')
             this.busActive = true
             this.busPresent = true
@@ -532,7 +532,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             formControls.get('registered').setValue(config.registrationRequired)
             formControls.get('bAvailableSlots').setValue(config.maxCount)
         }
-        if (config.vehicleType === 'Bus' && config.active == false) {
+        if (config.vehicleType === 'BUS' && config.active == false) {
             console.log('b false is executed')
             this.busPresent = true
             this.busActive = false

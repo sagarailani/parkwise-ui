@@ -496,7 +496,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
     }
 
     updateFormData(config) {
-        if (config.vehicleType === '2-Wheeler') {
+        if (config.vehicleType === '2-WHEELER') {
             this.twoWheelerPresent = true;
             this.twoWheelerConfig = config;
             let formControls = this.updatePriceConfigForm.controls.twoWheelerPriceGroup;
@@ -511,7 +511,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             formControls.get('twIncrementalTime').setValue(config.incrementPricing.incrementTime);
             formControls.get('twIncrementalPrice').setValue(config.incrementPricing.incrementCost);
         }
-        if (config.vehicleType === '4-Wheeler') {
+        if (config.vehicleType === '4-WHEELER') {
             this.fourWheelerPresent = true;
             this.fourWheelerConfig = config;
             let formControls = this.updatePriceConfigForm.controls.fourWheelerPriceGroup;
@@ -526,7 +526,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             formControls.get('fwIncrementalTime').setValue(config.incrementPricing.incrementTime);
             formControls.get('fwIncrementalPrice').setValue(config.incrementPricing.incrementCost);
         }
-        if (config.vehicleType === 'Heavy') {
+        if (config.vehicleType === 'HEAVY') {
             this.heavyPresent = true;
             this.heavyConfig = config;
             let formControls = this.updatePriceConfigForm.controls.heavyPriceGroup;
@@ -541,7 +541,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             formControls.get('hIncrementalTime').setValue(config.incrementPricing.incrementTime);
             formControls.get('hIncrementalPrice').setValue(config.incrementPricing.incrementCost);
         }
-        if (config.vehicleType === 'Bus') {
+        if (config.vehicleType === 'BUS') {
             this.busPresent = true;
             this.busConfig = config;
             let formControls = this.updatePriceConfigForm.controls.twoWheelerPriceGroup;

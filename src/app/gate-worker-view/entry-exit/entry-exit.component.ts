@@ -21,16 +21,15 @@ export class EntryExitComponent implements OnInit {
 
     @Input() type: string;
     @Input() areConfigurationsAvailable: boolean;
-    // configurations: string[] = [
-    //     'Regular',
-    //     'Temporary',
-    //     'Pass',
-    //     'Registered'
-    // ];
+    showConfigurations: boolean = false;
+
+    clientId;
+    premiseId;
+    role;
 
     configurations: {}[];
 
-    showConfigurations: boolean = false;
+
 
     constructor(private premiseConfigurationService: PremiseConfigurationService) { }
 

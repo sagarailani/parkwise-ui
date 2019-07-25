@@ -377,16 +377,16 @@ export class PricingFormComponent implements OnInit {
 
     updateFormData(config) {
         console.log(config.vehicleType)
-        if (config.vehicleType === '2-Wheeler') {
+        if (config.vehicleType === '2-WHEELER') {
             this.twoWheelerPresent = true
             this.twoWheelerConfig = config;
-        } else if (config.vehicleType === '4-Wheeler') {
+        } else if (config.vehicleType === '4-WHEELER') {
             this.fourWheelerPresent = true
             this.fourWheelerConfig = config;
-        } else if (config.vehicleType === 'Bus') {
+        } else if (config.vehicleType === 'BUS') {
             this.busPresent = true
             this.busConfig = config;
-        } else if (config.vehicleType === 'Heavy') {
+        } else if (config.vehicleType === 'HEAVY') {
             this.heavyPresent = true
             this.heavyConfig = config;
         }

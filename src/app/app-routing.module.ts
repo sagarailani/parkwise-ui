@@ -1,14 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ContentComponent } from './content/content.component';
 
 const routes: Routes = [
     {
-        path: 'gw',
-        redirectTo: '/gate-worker-view',
+        path: '',
+        component: ContentComponent,
+    },
+    {
+        path: 'gw/:clientId/:premiseId/:role',
+        redirectTo: '/gate-worker-view/:clientId/:premiseId/:role',
         pathMatch: 'full',
     },
     {
-        path: '',
+        path: 'other',
         redirectTo: '/configurations',
         pathMatch: 'full'
     }

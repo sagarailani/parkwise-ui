@@ -6,6 +6,11 @@ body {
     width: 100%;
 }
 
+.form-inline {
+    float: right;
+    margin-left: 80%;
+}
+
 .side-nav-link {
     /* margin: upper right down left (clock wise) */
     margin: 0 0.5em 0 0.5em;

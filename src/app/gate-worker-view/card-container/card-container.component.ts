@@ -1,15 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-card-container',
-  templateUrl: './card-container.component.html',
-  styleUrls: ['./card-container.component.css']
+    selector: 'app-card-container',
+    templateUrl: './card-container.component.html',
+    styleUrls: ['./card-container.component.css']
 })
 export class CardContainerComponent implements OnInit {
 
-  constructor() { }
+    constructor(private route: ActivatedRoute) { }
 
-  ngOnInit() {
-  }
+    clientId;
+    premiseId;
+    role: string;
+
+    ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+        console.log("client id: " + this.clientId)
+        console.log("premise id: " + this.premiseId);
+        console.log("role: " + this.role)
+
+    }
 
 }

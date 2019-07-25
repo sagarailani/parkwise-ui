@@ -183,7 +183,7 @@ export class NewPremiseFormComponent implements OnInit {
                         if (entryTypeFormControls.get('twoWheeler').value === true) {
                             this._premiseConfigService.createRegularConfig(
                                 entryTypeFormControls.get('twoWheelerGroup').get('twAvailableSlots').value,
-                                '2-Wheeler',
+                                '2-WHEELER',
                                 false,
                                 entryTypeFormControls.get('twoWheelerGroup').get('registered').value,
                                 entryTypeFormControls.get('twoWheelerGroup').get('pass').value,
@@ -196,7 +196,7 @@ export class NewPremiseFormComponent implements OnInit {
                         if (entryTypeFormControls.get('fourWheeler').value === true) {
                             this._premiseConfigService.createRegularConfig(
                                 entryTypeFormControls.get('fourWheelerGroup').get('fwAvailableSlots').value,
-                                '4-Wheeler',
+                                '4-WHEELER',
                                 entryTypeFormControls.get('fourWheelerGroup').get('valet').value,
                                 entryTypeFormControls.get('fourWheelerGroup').get('registered').value,
                                 entryTypeFormControls.get('fourWheelerGroup').get('pass').value,
@@ -209,7 +209,7 @@ export class NewPremiseFormComponent implements OnInit {
                         if (entryTypeFormControls.get('heavy').value === true) {
                             this._premiseConfigService.createRegularConfig(
                                 entryTypeFormControls.get('heavyGroup').get('hAvailableSlots').value,
-                                'Heavy',
+                                'HEAVY',
                                 false,
                                 entryTypeFormControls.get('heavyGroup').get('registered').value,
                                 entryTypeFormControls.get('heavyGroup').get('pass').value,
@@ -222,7 +222,7 @@ export class NewPremiseFormComponent implements OnInit {
                         if (entryTypeFormControls.get('bus').value === true) {
                             this._premiseConfigService.createRegularConfig(
                                 entryTypeFormControls.get('busGroup').get('bAvailableSlots').value,
-                                'Bus',
+                                'BUS',
                                 false,
                                 entryTypeFormControls.get('busGroup').get('registered').value,
                                 entryTypeFormControls.get('busGroup').get('pass').value,

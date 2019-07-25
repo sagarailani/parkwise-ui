@@ -12,6 +12,7 @@ export class PassService {
 
     createPassConfig(days, duration, price, premiseId, configId): Observable<any> {
         let dataObj = {
+            "active": true,
             "premiseConfiguration": {
                 "id": configId,
             },

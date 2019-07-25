@@ -7,13 +7,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GateWorkerViewModule } from './gate-worker-view/gate-worker-view.module';
 import { ConfigurationsViewModule } from './configurations-view/configurations-view.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TitleBarComponent } from './title-bar/title-bar.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ContentComponent } from './content/content.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { TokenInterceptor } from './token.interceptor';
+
 
 @NgModule({
     declarations: [
         AppComponent,
         TitleBarComponent,
+        NavbarComponent,
+        ContentComponent,
+
     ],
     imports: [
         BrowserModule,
@@ -22,9 +30,16 @@ import { TitleBarComponent } from './title-bar/title-bar.component';
         GateWorkerViewModule,
         ConfigurationsViewModule,
         AppRoutingModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        NgbModule
     ],
-    providers: [],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TokenInterceptor,
+            multi: true
+        }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

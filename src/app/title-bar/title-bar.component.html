@@ -1,7 +1,6 @@
 <nav class="navbar navbar-left navbar-default navbar-expand-sm bg-dark">
 
     <div class="btn-toolbar">
-        <span class="side-nav-link" style="font-size:2em;color: white; cursor: pointer;">&#9776;</span>
         <div class="navbar-brand">
             <span>{{app_name}}</span>
         </div>
@@ -32,13 +31,14 @@
                 </div>
             </form>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-        </div>
     </ng-template>
 
     <div *ngIf="loggedIn === false">
         <button class="btn btn-lg btn-outline-light" (click)="open(content)">Login</button>
+    </div>
+
+    <div *ngIf="loggedIn === true">
+        <button class="btn btn-lg btn-outline-light" (click)="doLogout()">Logout</button>
     </div>
 
 </nav>

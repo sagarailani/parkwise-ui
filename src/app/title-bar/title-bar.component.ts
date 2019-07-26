@@ -75,5 +75,7 @@ export class TitleBarComponent implements OnInit {
 
     doLogout() {
         this.loggedIn = false;
+        localStorage.removeItem('token');
+        this.router.navigate([''])
     }
 }

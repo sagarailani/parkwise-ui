@@ -4,6 +4,6 @@
         <div class="valet-holder" *ngIf="enableValet === true">
             <input type="checkbox" formControlName="valetOption"><span>Use Valet</span>
         </div>
-        <input type="submit">
+        <input type="submit" [disabled]="dataEntryForm.invalid">
     </div>
 </form>

@@ -2,34 +2,45 @@
     <h3 class="config-headers"><span>Create/Add a new</span></h3>
     <hr />
     <div class="row">
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Client"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3" *ngIf="role === 'ADMIN'">
+            <app-configurations-card configurationName="Client" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
         </div>
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Premise"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3" *ngIf="role === 'ADMIN' || role === 'OWNER'">
+            <app-configurations-card configurationName="Premise" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
         </div>
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Premise Manager"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3" *ngIf="role === 'ADMIN' || role === 'OWNER'">
+            <app-configurations-card configurationName="Premise Manager" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
         </div>
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Gate Worker"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Gate Worker" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
         </div>
-    </div>
-    <div class="row">
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Pricing Strategy"></app-configurations-card>
+        <!-- </div>
+    <div class="row"> -->
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Pricing Strategy" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
+        </div>
+
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Pass Configurations" [clientId]="clientId"
+                [premiseId]="premiseId" [role]="role"></app-configurations-card>
         </div>
 
         <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Pass Configurations"></app-configurations-card>
+            <app-configurations-card configurationName="Generate Pass" [clientId]="clientId" [premiseId]="premiseId"
+                [role]="role"></app-configurations-card>
         </div>
 
         <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Generate Pass"></app-configurations-card>
-        </div>
-
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Registered Vehicles"></app-configurations-card>
+            <app-configurations-card configurationName="Registered Vehicles" [clientId]="clientId"
+                [premiseId]="premiseId" [role]="role"></app-configurations-card>
 
         </div>
 
@@ -39,14 +50,20 @@
     <hr />
 
     <div class="row">
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Premise Configuration"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Premise Configuration" [clientId]="clientId"
+                [premiseId]="premiseId" [role]="role"></app-configurations-card>
         </div>
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Pricing Configuration"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Pricing Configuration" [clientId]="clientId"
+                [premiseId]="premiseId" [role]="role"></app-configurations-card>
         </div>
-        <div class="card-container col-sm-6 col-md-6 col-lg-3">
-            <app-configurations-card configurationName="Gate Configuration"></app-configurations-card>
+        <div class="card-container col-sm-6 col-md-6 col-lg-3"
+            *ngIf="role === 'ADMIN' || role === 'OWNER' || role === 'MANAGER'">
+            <app-configurations-card configurationName="Gate Configuration" [clientId]="clientId"
+                [premiseId]="premiseId" [role]="role"></app-configurations-card>
         </div>
         <div class="card-container col-sm-6 col-md-6 col-lg-3">
         </div>

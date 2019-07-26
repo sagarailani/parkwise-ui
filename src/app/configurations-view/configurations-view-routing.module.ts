@@ -16,53 +16,53 @@ import { PassConfigFormComponent } from './pass-config-form/pass-config-form.com
 
 const routes: Routes = [
     {
-        path: 'configurations', component: ConfigurationsViewComponent, children: [
+        path: 'configurations/:clientId/:premiseId/:role', component: ConfigurationsViewComponent, children: [
             {
                 path: '',
                 component: ConfigurationsContainerComponent
             },
             {
-                path: 'client-form',
+                path: 'client-form/:clientId/:premiseId/:role',
                 component: NewClientFormComponent,
             },
             {
-                path: 'premise-form',
+                path: 'premise-form/:clientId/:premiseId/:role',
                 component: NewPremiseFormComponent
             },
             {
-                path: 'new-premise-manager',
+                path: 'new-premise-manager/:clientId/:premiseId/:role',
                 component: NewPremiseManagerFormComponent
             },
             {
-                path: 'new-gate-worker',
+                path: 'new-gate-worker/:clientId/:premiseId/:role',
                 component: NewGateWorkerFormComponent
             },
             {
-                path: 'pricing',
+                path: 'pricing/:clientId/:premiseId/:role',
                 component: PricingFormComponent
             },
             {
-                path: 'update-premise-configuration',
+                path: 'update-premise-configuration/:clientId/:premiseId/:role',
                 component: UpdatePremiseConfigurationFormComponent
             },
             {
-                path: 'generate-pass',
+                path: 'generate-pass/:clientId/:premiseId/:role',
                 component: GeneratePassFormComponent
             },
             {
-                path: 'gate-config',
+                path: 'gate-config/:clientId/:premiseId/:role',
                 component: GateFormComponent
             },
             {
-                path: 'registered-vehicle',
+                path: 'registered-vehicle/:clientId/:premiseId/:role',
                 component: RegisteredVehicleComponent
             },
             {
-                path: 'pricing-config',
+                path: 'pricing-config/:clientId/:premiseId/:role',
                 component: UpdatePricingConfigurationFormComponent,
             },
             {
-                path: 'pass-config',
+                path: 'pass-config/:clientId/:premiseId/:role',
                 component: PassConfigFormComponent
             }
         ]

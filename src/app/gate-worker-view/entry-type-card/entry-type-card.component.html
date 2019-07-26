@@ -5,7 +5,13 @@
 </div>
 <div *ngFor="let type of vehicleTypes">
     <div *ngIf="isShowVehicleTypeEnabled === true" [@slideUpDown]>
-        <app-vehicle-type-card [type]="type.vehicleType" [valetAvailable]="type.valet">
+        <app-vehicle-type-card [type]="type.vehicleType" [configId]="type.configId" [slots]="type.slots"
+            [valetAvailable]="type.valet" [clientId]="clientId" [premiseId]="premiseId" [gateId]="gateId"
+            [workerId]="workerId">
         </app-vehicle-type-card>
     </div>
+</div>
+<div *ngIf="entryName === 'Temporary' && isShowVehicleTypeEnabled === true" [@slideUpDown]>
+    <app-data-entry-form [enableValet]="false" [clientId]="clientId" [premiseId]="premiseId" [workerId]="workerId"
+        [gateId]="gateId" [configId]="tempConfigId"></app-data-entry-form>
 </div>

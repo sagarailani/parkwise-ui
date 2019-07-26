@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { PremiseConfigService } from '../premise-config.service';
 import { PremiseService } from '../premise.service';
 import { UserService } from '../user.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-update-premise-configuration-form',
@@ -29,10 +30,18 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
     busPresent;
     busActive;
     busConfig;
+
+    clientId;
+    premiseId;
+    role;
+
+
     constructor(private fb: FormBuilder,
         private _userService: UserService,
         private _premiseService: PremiseService,
-        private _premiseConfigService: PremiseConfigService) { }
+        private _premiseConfigService: PremiseConfigService,
+        private route: ActivatedRoute
+    ) { }
 
     validationMessages = {
         'clientUsername': {
@@ -69,6 +78,12 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
+
         this.updatePremiseConfigForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -107,13 +122,33 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
             }),
         })
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                })
+        }
+
+        if (this.role === 'OWNER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe((premises) => {
+                    this.premiseForClient = premises;
+                })
+        }
+
+        if (this.role === 'MANAGER') {
+            this._premiseConfigService.getAllConfigs(this.premiseId)
+                .subscribe((configs) => {
+                    this.clearFormValues();
+                    for (let config in configs) {
+                        this.updateFormData(configs[config]);
+                    }
+                })
+        }
 
         this.updatePremiseConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
+            this.clientId = clientId;
             this._premiseService.getPremises(clientId)
                 .subscribe((premises) => {
                     this.premiseForClient = premises;
@@ -122,6 +157,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
 
         this.updatePremiseConfigForm.controls.premiseName.valueChanges
             .subscribe((premiseId) => {
+                this.premiseId = premiseId;
                 this._premiseConfigService.getAllConfigs(premiseId)
                     .subscribe((configs) => {
                         this.clearFormValues();
@@ -221,7 +257,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('twoWheelerGroup').get('registered').value,
                             innerControls.get('twoWheelerGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.twoWheelerConfig.id
                         ).subscribe((response) => {
                             console.log(response)
@@ -233,7 +269,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('twoWheelerGroup').get('registered').value,
                             innerControls.get('twoWheelerGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.twoWheelerConfig.incrementPricing.id,
                             this.twoWheelerConfig.id
                         ).subscribe((response) => {
@@ -247,8 +283,8 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                         false,
                         innerControls.get('twoWheelerGroup').get('registered').value,
                         innerControls.get('twoWheelerGroup').get('pass').value,
-                        formControls.premiseName.value,
-                        formControls.clientId.value
+                        this.premiseId,
+                        this.clientId
                     ).subscribe((response) => {
                         console.log(response);
                     })
@@ -266,7 +302,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             innerControls.get('fourWheelerGroup').get('valet').value,
                             innerControls.get('fourWheelerGroup').get('registered').value,
                             innerControls.get('fourWheelerGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.fourWheelerConfig.id
                         ).subscribe((response) => {
                             console.log(response)
@@ -278,7 +314,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             innerControls.get('fourWheelerGroup').get('valet').value,
                             innerControls.get('fourWheelerGroup').get('registered').value,
                             innerControls.get('fourWheelerGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.fourWheelerConfig.incrementPricing.id,
                             this.fourWheelerConfig.id
                         ).subscribe((response) => {
@@ -292,8 +328,8 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                         innerControls.get('fourWheelerGroup').get('valet').value,
                         innerControls.get('fourWheelerGroup').get('registered').value,
                         innerControls.get('fourWheelerGroup').get('pass').value,
-                        formControls.premiseName.value,
-                        formControls.clientUsername.value
+                        this.premiseId,
+                        this.clientId
                     ).subscribe((response) => {
                         console.log(response);
                     })
@@ -311,7 +347,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('heavyGroup').get('registered').value,
                             innerControls.get('heavyGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.heavyConfig.id
                         ).subscribe((response) => {
                             console.log(response)
@@ -323,7 +359,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('heavyGroup').get('registered').value,
                             innerControls.get('heavyGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.heavyConfig.incrementPricing.id,
                             this.heavyConfig.id
                         ).subscribe((response) => {
@@ -337,8 +373,8 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                         false,
                         innerControls.get('heavyGroup').get('registered').value,
                         innerControls.get('heavyGroup').get('pass').value,
-                        formControls.premiseName.value,
-                        formControls.clientId.value
+                        this.premiseId,
+                        this.clientId
                     ).subscribe((response) => {
                         console.log(response);
                     })
@@ -356,7 +392,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('busGroup').get('registered').value,
                             innerControls.get('busGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.busConfig.id
                         ).subscribe((response) => {
                             console.log(response)
@@ -368,7 +404,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                             false,
                             innerControls.get('busGroup').get('registered').value,
                             innerControls.get('busGroup').get('pass').value,
-                            formControls.premiseName.value,
+                            this.premiseId,
                             this.busConfig.incrementPricing.id,
                             this.busConfig.id
                         ).subscribe((response) => {
@@ -382,8 +418,8 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                         false,
                         innerControls.get('busGroup').get('registered').value,
                         innerControls.get('busGroup').get('pass').value,
-                        formControls.premiseName.value,
-                        formControls.clientId.value
+                        this.premiseId,
+                        this.clientId,
                     ).subscribe((response) => {
                         console.log(response);
                     })
@@ -400,7 +436,7 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 console.log(innerControls.get('allotedTime').value)
                 this._premiseConfigService.updatePremiseTempConfig(
                     innerControls.get('allotedTime').value,
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.temporaryConfig.id,
                     this.temporaryConfig.incrementPricing.id
                 ).subscribe((response) => {
@@ -410,8 +446,8 @@ export class UpdatePremiseConfigurationFormComponent implements OnInit {
                 innerControls.get('allotedTime').value
                 this._premiseConfigService.createTempConfig(
                     innerControls.get('allotedTime').value,
-                    formControls.premiseName.value,
-                    formControls.clientUsername.value
+                    this.premiseId,
+                    this.clientId
                 ).subscribe((response) => {
                     console.log(response)
                 })

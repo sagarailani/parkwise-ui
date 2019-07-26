@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { PremiseService } from '../premise.service';
 import { PremiseConfigService } from '../premise-config.service';
 import { PricingService } from '../pricing.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'app-update-pricing-configuration-form',
     templateUrl: './update-pricing-configuration-form.component.html',
@@ -23,6 +24,10 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
     busConfig;
     heavyPresent: boolean;
     heavyConfig;
+
+    clientId;
+    premiseId;
+    role;
 
     validationMessages = {
         'clientUsername': {
@@ -124,9 +129,16 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
         private _userService: UserService,
         private _premiseService: PremiseService,
         private _premiseConfigService: PremiseConfigService,
-        private _pricingService: PricingService) { }
+        private _pricingService: PricingService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.updatePriceConfigForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -165,13 +177,34 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             })
         });
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                })
+        }
+
+        if (this.role === 'OWNER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe((premises) => {
+                    this.premiseForClient = premises;
+                })
+        }
+
+        if (this.role === 'MANAGER') {
+            this._premiseConfigService.getRegularConfigs(this.premiseId)
+            this._premiseConfigService.eventSubject.subscribe((configs) => {
+                console.log(configs)
+                this.clearFormValues();
+                for (let config in configs) {
+                    this.updateFormData(configs[config]);
+                }
             })
+        }
 
         this.updatePriceConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
+            this.clientId = clientId;
             this._premiseService.getPremises(clientId)
                 .subscribe((premises) => {
                     this.premiseForClient = premises;
@@ -180,6 +213,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
 
         this.updatePriceConfigForm.controls.premiseName.valueChanges
             .subscribe((premiseId) => {
+                this.premiseId = premiseId;
                 this._premiseConfigService.getRegularConfigs(premiseId)
                 this._premiseConfigService.eventSubject.subscribe((configs) => {
                     console.log(configs)
@@ -351,7 +385,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
         if (formControls.disablePriceConfig.value === true) {
             if (this.twoWheelerPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id,
                     this.twoWheelerConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -360,7 +394,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             }
             if (this.fourWheelerPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id,
                     this.fourWheelerConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -369,7 +403,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             }
             if (this.busPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id,
                     this.busConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -378,7 +412,7 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
             }
             if (this.heavyPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id,
                     this.heavyConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -392,14 +426,14 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
                     formControls.twoWheelerPriceGroup.get('twBaseTime').value,
                     formControls.twoWheelerPriceGroup.get('twIncrementalPrice').value,
                     formControls.twoWheelerPriceGroup.get('twIncrementalTime').value,
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response);
                 })
             } else if (formControls.twoWheeler.value === false && this.twoWheelerPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id,
                     this.twoWheelerConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -412,14 +446,14 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
                     formControls.fourWheelerPriceGroup.get('fwBaseTime').value,
                     formControls.fourWheelerPriceGroup.get('fwIncrementalPrice').value,
                     formControls.fourWheelerPriceGroup.get('fwIncrementalTime').value,
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response);
                 })
             } else if (formControls.fourWheeler.value === false && this.fourWheelerPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id,
                     this.fourWheelerConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -432,14 +466,14 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
                     formControls.busPriceGroup.get('bBaseTime').value,
                     formControls.busPriceGroup.get('bIncrementalPrice').value,
                     formControls.busPriceGroup.get('bIncrementalTime').value,
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id
                 ).subscribe((response) => {
                     console.log(response);
                 })
             } else if (formControls.bus.value === false && this.busPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id,
                     this.busConfig.incrementPricing.id,
                 ).subscribe((response) => {
@@ -452,14 +486,14 @@ export class UpdatePricingConfigurationFormComponent implements OnInit {
                     formControls.heavyPriceGroup.get('hBaseTime').value,
                     formControls.heavyPriceGroup.get('hIncrementalPrice').value,
                     formControls.heavyPriceGroup.get('hIncrementalTime').value,
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id
                 ).subscribe((response) => {
                     console.log(response);
                 })
             } else if (formControls.heavy.value === false && this.heavyPresent) {
                 this._pricingService.disablePricingConfig(
-                    formControls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id,
                     this.heavyConfig.incrementPricing.id,
                 ).subscribe((response) => {

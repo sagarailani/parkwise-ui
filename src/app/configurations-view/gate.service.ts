@@ -12,4 +12,8 @@ export class GateService {
     addGateForPremise(premiseId, gateName): Observable<any> {
         return this._http.post(environment.apiBaseUrl + "/premise/" + premiseId + "/gate", gateName);
     }
+
+    getGatesForPremise(premiseId) {
+        return this._http.get(environment.apiBaseUrl + '/premise/' + premiseId + "/gate");
+    }
 }

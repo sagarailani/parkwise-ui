@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { PremiseService } from '../premise.service';
 import { PremiseConfigService } from '../premise-config.service';
 import { PassService } from '../pass.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -23,6 +24,11 @@ export class PassConfigFormComponent implements OnInit {
     heavyConfig;
     busPresent: boolean;
     busConfig;
+
+    clientId;
+    premiseId;
+    role;
+
 
     clients: any;
     premisesForClient: any;
@@ -110,9 +116,14 @@ export class PassConfigFormComponent implements OnInit {
         private _premiseService: PremiseService,
         private _premiseConfigService: PremiseConfigService,
         private _passService: PassService,
+        private route: ActivatedRoute
     ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
 
         this.passConfigForm = this.fb.group({
             clientUsername: ['', Validators.required],
@@ -167,14 +178,34 @@ export class PassConfigFormComponent implements OnInit {
             }),
         })
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                })
+        }
+        if (this.role === 'OWNER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe((premises) => {
+                    console.log(premises)
+                    this.premisesForClient = premises;
+                })
+        }
+        if (this.role === 'MANAGER') {
+            this._premiseConfigService.getRegularConfigs(this.premiseId)
+            this._premiseConfigService.eventSubject
+                .subscribe((configs) => {
+                    console.log(configs)
+                    for (let config in configs) {
+                        this.updateFormValues(configs[config])
+                    }
+                })
+        }
 
         this.passConfigForm.controls.clientUsername.valueChanges
             .subscribe((clientId) => {
-                this._premiseService.getPremises(clientId)
+                this.clientId = clientId
+                this._premiseService.getPremises(this.clientId)
                     .subscribe((premises) => {
                         console.log(premises)
                         this.premisesForClient = premises;
@@ -183,7 +214,8 @@ export class PassConfigFormComponent implements OnInit {
 
         this.passConfigForm.controls.premiseName.valueChanges
             .subscribe((premiseId) => {
-                this._premiseConfigService.getRegularConfigs(premiseId)
+                this.premiseId = premiseId;
+                this._premiseConfigService.getRegularConfigs(this.premiseId)
                 this._premiseConfigService.eventSubject
                     .subscribe((configs) => {
                         console.log(configs)
@@ -202,7 +234,7 @@ export class PassConfigFormComponent implements OnInit {
                     7,
                     formControls.get('twWeekTime').value,
                     formControls.get('twWeekPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -213,7 +245,7 @@ export class PassConfigFormComponent implements OnInit {
                     30,
                     formControls.get('twMonthTime').value,
                     formControls.get('twMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -224,7 +256,7 @@ export class PassConfigFormComponent implements OnInit {
                     180,
                     formControls.get('twSixMonthTime').value,
                     formControls.get('twSixMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.twoWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -238,7 +270,7 @@ export class PassConfigFormComponent implements OnInit {
                     7,
                     formControls.get('fwWeekTime').value,
                     formControls.get('fwWeekPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -249,7 +281,7 @@ export class PassConfigFormComponent implements OnInit {
                     30,
                     formControls.get('fwMonthTime').value,
                     formControls.get('fwMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -260,7 +292,7 @@ export class PassConfigFormComponent implements OnInit {
                     180,
                     formControls.get('fwSixMonthTime').value,
                     formControls.get('fwSixMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.fourWheelerConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -274,7 +306,7 @@ export class PassConfigFormComponent implements OnInit {
                     7,
                     formControls.get('hWeekTime').value,
                     formControls.get('hWeekPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -285,7 +317,7 @@ export class PassConfigFormComponent implements OnInit {
                     30,
                     formControls.get('hMonthTime').value,
                     formControls.get('hMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -296,7 +328,7 @@ export class PassConfigFormComponent implements OnInit {
                     180,
                     formControls.get('hSixMonthTime').value,
                     formControls.get('hSixMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.heavyConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -310,7 +342,7 @@ export class PassConfigFormComponent implements OnInit {
                     7,
                     formControls.get('bWeekTime').value,
                     formControls.get('bWeekPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -321,7 +353,7 @@ export class PassConfigFormComponent implements OnInit {
                     30,
                     formControls.get('bMonthTime').value,
                     formControls.get('bMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id
                 ).subscribe((response) => {
                     console.log(response)
@@ -332,7 +364,7 @@ export class PassConfigFormComponent implements OnInit {
                     180,
                     formControls.get('bSixMonthTime').value,
                     formControls.get('bSixMonthPrice').value,
-                    this.passConfigForm.controls.premiseName.value,
+                    this.premiseId,
                     this.busConfig.id
                 ).subscribe((response) => {
                     console.log(response)

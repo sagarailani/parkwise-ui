@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { ClientService } from '../client.service';
 import { PremiseService } from '../premise.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-new-premise-manager-form',
@@ -15,6 +16,9 @@ export class NewPremiseManagerFormComponent implements OnInit {
     userRole: string = "MANAGER";
     clients: {};
     premiseForClient: {};
+    clientId;
+    premiseId;
+    role;
 
     validationMessages = {
         'clientUsername': {
@@ -43,9 +47,16 @@ export class NewPremiseManagerFormComponent implements OnInit {
         private fb: FormBuilder,
         private _userService: UserService,
         private _clientService: ClientService,
-        private _premiseService: PremiseService) { }
+        private _premiseService: PremiseService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.addPremiseManagerForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -66,10 +77,24 @@ export class NewPremiseManagerFormComponent implements OnInit {
             this.logValidationErrors();
         })
 
-        this._clientService.getClients()
-            .subscribe((data) => {
-                this.clients = data;
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((data) => {
+                    console.log(data)
+                    this.clients = data;
+                })
+        }
+
+        this.addPremiseManagerForm.controls.clientUsername.valueChanges
+            .subscribe((clientId) => {
+                this.clientId = clientId;
             })
+
+        this.addPremiseManagerForm.controls.premiseName.valueChanges
+            .subscribe((premiseId) => {
+                this.premiseId = premiseId;
+            })
+
     }
 
     savePremiseManagerData() {
@@ -82,10 +107,14 @@ export class NewPremiseManagerFormComponent implements OnInit {
                     return;
                 } else {
                     this.formErrors['username'] = ""
-                    this._userService.addUser(this.addPremiseManagerForm.value, this.userRole)
-                        .subscribe((value) => {
-                            console.log(value)
-                        })
+                    this._userService.addUser(
+                        this.premiseId,
+                        this.addPremiseManagerForm.controls.username.value,
+                        this.addPremiseManagerForm.controls.password.value,
+                        this.userRole
+                    ).subscribe((value) => {
+                        console.log(value)
+                    })
                 }
             })
 

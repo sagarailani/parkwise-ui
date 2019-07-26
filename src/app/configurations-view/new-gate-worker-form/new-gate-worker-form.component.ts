@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user.service';
 import { ClientService } from '../client.service';
 import { PremiseService } from '../premise.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-new-gate-worker-form',
@@ -15,6 +16,10 @@ export class NewGateWorkerFormComponent implements OnInit {
     userRole: string = "WORKER";
     clients: {};
     premiseForClient: {};
+    clientId;
+    premiseId;
+    role;
+
 
     validationMessages = {
         'clientUsername': {
@@ -42,9 +47,17 @@ export class NewGateWorkerFormComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private _userService: UserService,
         private _clientService: ClientService,
-        private _premiseService: PremiseService) { }
+        private _premiseService: PremiseService,
+        private route: ActivatedRoute,
+        private router: Router,
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.addGateWorkerForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -60,17 +73,26 @@ export class NewGateWorkerFormComponent implements OnInit {
                 .subscribe(premises => this.premiseForClient = premises)
 
         });
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients
+                });
+        }
 
-        this._clientService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients
-            });
-
+        this.addGateWorkerForm.controls.clientUsername.valueChanges
+            .subscribe((clientId) => {
+                this.clientId = clientId;
+            })
 
         this.addGateWorkerForm.valueChanges.subscribe(() => {
             this.logValidationErrors();
-
         })
+
+        this.addGateWorkerForm.controls.premiseName.valueChanges
+            .subscribe((premiseId) => {
+                this.premiseId = premiseId;
+            })
     }
 
     saveGateWorkerData() {
@@ -83,9 +105,16 @@ export class NewGateWorkerFormComponent implements OnInit {
                     return;
                 } else {
                     this.formErrors['username'] = ""
-                    this._userService.addUser(this.addGateWorkerForm.value, this.userRole)
+                    this._userService.addUser(
+                        this.premiseId, this.addGateWorkerForm.controls.username.value,
+                        this.addGateWorkerForm.controls.password.value, this.userRole)
                         .subscribe((value) => {
                             console.log(value)
+                            if (value['role'] === 'WORKER') {
+                                this.router.navigate(['configurations', this.clientId, this.premiseId, this.role])
+                            } else {
+                                alert('Problem with server please try again later')
+                            }
                         })
                 }
             })

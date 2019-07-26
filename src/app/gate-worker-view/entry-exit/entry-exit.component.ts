@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { PremiseConfigurationService } from '../premise-configuration.service';
+import { PremiseConfigService } from 'src/app/configurations-view/premise-config.service';
 @Component({
     selector: 'app-entry-exit',
     templateUrl: './entry-exit.component.html',
@@ -21,30 +21,70 @@ export class EntryExitComponent implements OnInit {
 
     @Input() type: string;
     @Input() areConfigurationsAvailable: boolean;
+
+    @Input() clientId;
+    @Input() premiseId;
+    @Input() role;
+    @Input() workerId;
+    @Input() gateId;
+
     showConfigurations: boolean = false;
-
-    clientId;
-    premiseId;
-    role;
-
+    tempConfigId;
     configurations: {}[];
 
+    entryTypes = [];
+    vehicleTypes: {}[] = [];
 
-
-    constructor(private premiseConfigurationService: PremiseConfigurationService) { }
+    constructor(
+        private _premiseConfigService: PremiseConfigService
+    ) { }
 
     ngOnInit() {
-        this.getConfigurations();
-        console.log(this.configurations);
+        if (this.type === 'Entry') {
+            this._premiseConfigService.getAllConfigs(this.premiseId)
+                .subscribe((configs) => {
+                    this.configurations = configs;
+                    console.log(configs)
+                    for (let config in configs) {
+                        this.processConfigurations(configs[config])
+                    }
+                    // console.log(this.entryTypes)
+                    // console.log(this.vehicleTypes)
+                })
+        }
+        console.log("worker id " + this.workerId)
+        console.log("type " + this.type)
+        console.log("role  " + this.role)
+        console.log("client id " + this.clientId)
+        console.log("premise id " + this.premiseId)
+        console.log("gate id " + this.gateId)
     }
 
     showEntryTypeConfigurations() {
         this.showConfigurations = !this.showConfigurations;
     }
 
-    getConfigurations() {
-        this.premiseConfigurationService.getConfigurations()
-            .subscribe(configurations => this.configurations = configurations);
-        // console.log(this.configurations);
+    processConfigurations(config) {
+        // console.log(config)
+        // console.log("vehicle types:")
+        // console.log(this.vehicleTypes)
+        // console.log(this.entryTypes)
+        if (config.entryType === 'TEMPORARY' && !this.entryTypes.includes('Temporary')) {
+            this.entryTypes.push('Temporary');
+            this.tempConfigId = config.id;
+        }
+        if (config.entryType === 'REGULAR') {
+            if (!this.entryTypes.includes('Regular')) {
+                this.entryTypes.push('Regular')
+            }
+            let configObj = {
+                'vehicleType': config.vehicleType,
+                'slots': config.maxCount,
+                'configId': config.id,
+                'valet': config.valetAvailable,
+            }
+            this.vehicleTypes.push(configObj);
+        }
     }
+
 }

@@ -4,6 +4,7 @@ import { UserService } from '../user.service';
 import { PremiseService } from '../premise.service';
 import { PremiseConfigService } from '../premise-config.service';
 import { PricingService } from '../pricing.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-pricing-form',
@@ -25,6 +26,11 @@ export class PricingFormComponent implements OnInit {
     heavyConfig: any;
     busPresent: boolean;
     busConfig: any;
+
+    clientId;
+    premiseId;
+    role;
+
 
     validationMessages = {
         'clientUsername': {
@@ -124,9 +130,15 @@ export class PricingFormComponent implements OnInit {
         private _userService: UserService,
         private _premiseService: PremiseService,
         private _premiseConfigService: PremiseConfigService,
-        private _pricingService: PricingService) { }
+        private _pricingService: PricingService,
+        private route: ActivatedRoute,
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
 
         this.updatePricingForm = this.fb.group({
             clientUsername: ['', Validators.required],
@@ -317,15 +329,41 @@ export class PricingFormComponent implements OnInit {
                 control.updateValueAndValidity();
             })
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-                console.log(clients)
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                    console.log(clients)
+                })
+        }
+
+        if (this.role === 'MANAGER') {
+            this._premiseConfigService.getRegularConfigs(this.premiseId)
+            this._premiseConfigService.eventSubject
+                .subscribe((configs) => {
+                    this.twoWheelerPresent = false;
+                    this.fourWheelerPresent = false;
+                    this.busPresent = false;
+                    this.heavyPresent = false;
+                    this.premiseConfigs = configs;
+                    console.log(configs)
+                    for (let config in this.premiseConfigs) {
+                        this.updateFormData(this.premiseConfigs[config]);
+                    }
+                })
+        }
+
+        if (this.role === 'OWNER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe((premises) => {
+                    this.premisesForClient = premises;
+                })
+        }
 
         this.updatePricingForm.controls.clientUsername.valueChanges
             .subscribe((clientId) => {
-                this._premiseService.getPremises(clientId)
+                this.clientId = clientId;
+                this._premiseService.getPremises(this.clientId)
                     .subscribe((premises) => {
                         this.premisesForClient = premises;
                     })
@@ -333,6 +371,7 @@ export class PricingFormComponent implements OnInit {
 
         this.updatePricingForm.controls.premiseName.valueChanges
             .subscribe((premiseId) => {
+                this.premiseId = premiseId;
                 this._premiseConfigService.getRegularConfigs(premiseId)
                 this._premiseConfigService.eventSubject
                     .subscribe((configs) => {
@@ -402,7 +441,7 @@ export class PricingFormComponent implements OnInit {
                 innerControls.get('twBaseTime').value,
                 innerControls.get('twIncrementalPrice').value,
                 innerControls.get('twIncrementalTime').value,
-                formControls.clientUsername.value,
+                this.premiseId,
                 this.twoWheelerConfig.id
             ).subscribe((response) => {
                 console.log(response)
@@ -415,7 +454,7 @@ export class PricingFormComponent implements OnInit {
                 controls.get('fwBaseTime').value,
                 controls.get('fwIncrementalPrice').value,
                 controls.get('fwIncrementalTime').value,
-                formControls.clientUsername.value,
+                this.premiseId,
                 this.fourWheelerConfig.id
             ).subscribe((response) => {
                 console.log(response)
@@ -428,7 +467,7 @@ export class PricingFormComponent implements OnInit {
                 controls.get('hBaseTime').value,
                 controls.get('hIncrementalPrice').value,
                 controls.get('hIncrementalTime').value,
-                formControls.clientUsername.value,
+                this.premiseId,
                 this.heavyConfig.id
             ).subscribe((response) => {
                 console.log(response)
@@ -441,7 +480,7 @@ export class PricingFormComponent implements OnInit {
                 controls.get('bBaseTime').value,
                 controls.get('bIncrementalPrice').value,
                 controls.get('bIncrementalTime').value,
-                formControls.clientUsername.value,
+                this.premiseId,
                 this.busConfig.id
             ).subscribe((response) => {
                 console.log(response)

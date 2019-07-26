@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../user.service';
 import { ClientService } from '../client.service';
 @Component({
@@ -12,6 +12,10 @@ export class NewClientFormComponent implements OnInit {
 
     // usernameHelp: string = "Username should be unique";
     clientDataInputForm: FormGroup;
+    clientId;
+    premiseId;
+    role;
+
 
     validationMessages = {
         'clientName': {
@@ -36,9 +40,16 @@ export class NewClientFormComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private router: Router,
         private _userService: UserService,
-        private _clientService: ClientService) { }
+        private _clientService: ClientService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.clientDataInputForm = this.fb.group({
             clientName: ['', Validators.required],
             username: ['', Validators.required],
@@ -65,6 +76,11 @@ export class NewClientFormComponent implements OnInit {
                         this.clientDataInputForm.controls.password.value)
                         .subscribe((value) => {
                             console.log(value)
+                            if (value['role'] === 'OWNER') {
+                                this.router.navigate(['configurations', this.clientId, this.premiseId, this.role])
+                            } else {
+                                alert('There was some problem with the server. Please try again later')
+                            }
                         })
                 }
             })

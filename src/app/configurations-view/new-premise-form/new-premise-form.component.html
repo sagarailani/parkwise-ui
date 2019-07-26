@@ -4,7 +4,7 @@
     <hr />
 
     <form [formGroup]="newPremiseDataInputForm" class="form-content" (ngSubmit)="savePremiseData()">
-        <div class="form-group">
+        <div class="form-group" *ngIf="role === 'ADMIN'">
             <label for="clientUsername">Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor=" let client of clients" value="{{client.clientId}}">

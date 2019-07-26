@@ -8,13 +8,13 @@ const routes: Routes = [
         component: ContentComponent,
     },
     {
-        path: 'gw/:clientId/:premiseId/:role',
-        redirectTo: '/gate-worker-view/:clientId/:premiseId/:role',
+        path: 'gw/:clientId/:premiseId/:role/:workerId',
+        redirectTo: '/gate-worker-view/:clientId/:premiseId/:role/:workerId',
         pathMatch: 'full',
     },
     {
-        path: 'other',
-        redirectTo: '/configurations',
+        path: 'other/:clientId/:premiseId/:role',
+        redirectTo: 'configurations/:clientId/:premiseId/:role',
         pathMatch: 'full'
     }
 ];

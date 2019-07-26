@@ -13,9 +13,14 @@ export class LogInService {
     getResponse(username, password): Observable<any> {
         let localObject = {
             "username": username,
-            "password": "{noop}" + password
+            "password": password
         };
         console.log(environment.apiBaseUrl)
+        console.log(localObject['password'])
         return this._http.post(environment.apiBaseUrl + '/login', localObject);
+    }
+
+    logOut() {
+        localStorage.removeItem('token')
     }
 }

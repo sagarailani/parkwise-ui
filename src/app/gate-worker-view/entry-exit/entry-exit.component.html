@@ -4,13 +4,21 @@
     </div>
 </div>
 <div *ngIf="areConfigurationsAvailable === true">
-    <div *ngFor="let configuration of configurations">
-        <div *ngIf="showConfigurations === true" [@slideUpDown]>
-            <app-entry-type-card [entryName]="configuration.entryName" [vehicleTypes]="configuration.vehicleTypes">
-            </app-entry-type-card>
-        </div>
+    <!-- <div *ngFor="let entryType of entryTypes"> -->
+    <div *ngIf="showConfigurations === true" [@slideUpDown]>
+        <app-entry-type-card entryName="Regular" [vehicleTypes]="vehicleTypes" [premiseId]="premiseId"
+            [clientId]="clientId" [workerId]="workerId" [gateId]="gateId">
+        </app-entry-type-card>
     </div>
+    <div *ngIf="showConfigurations === true" [@slideUpDown]>
+        <app-entry-type-card entryName="Temporary" [tempConfigId]="tempConfigId" [premiseId]="premiseId"
+            [clientId]="clientId" [workerId]="workerId" [gateId]="gateId">
+        </app-entry-type-card>
+    </div>
+    <!-- </div> -->
 </div>
 <div *ngIf="areConfigurationsAvailable === false && showConfigurations === true" [@slideUpDown]>
-    <app-data-entry-form [enableValet]="false"></app-data-entry-form>
+    <app-data-entry-form type="EXIT" [premiseId]="premiseId" [gateId]="gateId" [enableValet]="false"
+        [workerId]="workerId">
+    </app-data-entry-form>
 </div>

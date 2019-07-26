@@ -4,7 +4,7 @@
 
     <form [formGroup]="registerVehicleForm" (ngSubmit)="saveRegisteredVehicleData()">
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="role === 'ADMIN'">
             <label>Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
                 <option *ngFor="let client of clients" value="{{client.clientId}}">
@@ -18,7 +18,7 @@
 
         </div>
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="role === 'ADMIN' || role === 'OWNER'">
             <label>Premise Name: </label><br>
             <select class="custom-select col-sm-6" formControlName="premiseName" (blur)="logValidationErrors()">
                 <option *ngFor="let premise of premiseForClient" value="{{premise.id}}">

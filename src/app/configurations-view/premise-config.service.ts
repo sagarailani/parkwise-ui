@@ -53,6 +53,7 @@ export class PremiseConfigService {
                 'active': true,
                 'baseTime': allottedTime
             },
+            "maxCount": 100,
             'entryType': 'TEMPORARY',
         }
         return this._http.post(environment.apiBaseUrl + '/premise/' + premiseId + '/premiseConfiguration', dataObj)

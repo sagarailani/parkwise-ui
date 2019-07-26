@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { GateWorkerViewModule } from '../gate-worker-view.module';
 @Component({
     selector: 'app-vehicle-type-card',
     templateUrl: './vehicle-type-card.component.html',
@@ -19,8 +20,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class VehicleTypeCardComponent implements OnInit {
 
     @Input() type: string;
-    @Input() number: number;
     @Input() valetAvailable: boolean;
+    @Input() slots;
+    @Input() configId;
+    @Input() clientId;
+    @Input() premiseId;
+    @Input() workerId;
+    @Input() gateId;
+
     isShowForm: boolean = false;
 
     constructor() { }

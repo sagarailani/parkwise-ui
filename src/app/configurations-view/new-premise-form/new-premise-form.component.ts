@@ -4,6 +4,7 @@ import { ClientService } from '../client.service';
 import { UserService } from '../user.service';
 import { PremiseService } from '../premise.service';
 import { PremiseConfigService } from '../premise-config.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector: 'app-new-premise-form',
@@ -15,11 +16,18 @@ export class NewPremiseFormComponent implements OnInit {
     newPremiseDataInputForm: FormGroup;
 
     clients: any;
+    clientId;
+    premiseId;
+    role;
+
 
     constructor(private fb: FormBuilder,
         private _userService: UserService,
         private _premiseService: PremiseService,
-        private _premiseConfigService: PremiseConfigService) { }
+        private _premiseConfigService: PremiseConfigService,
+        private route: ActivatedRoute,
+        private router: Router,
+    ) { }
 
     validationMessages = {
         'clientUsername': {
@@ -56,6 +64,11 @@ export class NewPremiseFormComponent implements OnInit {
     }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.newPremiseDataInputForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -153,31 +166,32 @@ export class NewPremiseFormComponent implements OnInit {
                 allotedTime.updateValueAndValidity();
             })
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                })
+        }
 
-        // this._clientService.getClients()
-        //     .subscribe((value) => {
-        //         this.clients = value;
-        //         console.log(this.clients)
-        //     })
-        // this.newPremiseDataInputForm.controls.clientUsername.setValue('SAMPLE');
+        this.newPremiseDataInputForm.controls.clientUsername.valueChanges
+            .subscribe((clientId) => {
+                this.clientId = clientId;
+                console.log(this.clientId)
+            })
     }
 
     savePremiseData() {
         console.log(this.newPremiseDataInputForm.value)
         let premiseId;
-        this._premiseService.createNewPremise(this.newPremiseDataInputForm.controls.clientUsername.value
+        this._premiseService.createNewPremise(
+            this.clientId
             , this.newPremiseDataInputForm.controls.premiseName.value)
             .subscribe((value) => {
                 console.log(value)
-                premiseId = value.id;
-                console.log(premiseId)
+                this.premiseId = value.id;
                 let formControls = this.newPremiseDataInputForm.controls;
                 let entryTypeFormControls = this.newPremiseDataInputForm.controls.entryTypeRegularForm;
-                if (premiseId !== null) {
+                if (this.premiseId !== null) {
 
                     if (formControls.entryTypeRegular.value === true) {
                         if (entryTypeFormControls.get('twoWheeler').value === true) {
@@ -187,8 +201,8 @@ export class NewPremiseFormComponent implements OnInit {
                                 false,
                                 entryTypeFormControls.get('twoWheelerGroup').get('registered').value,
                                 entryTypeFormControls.get('twoWheelerGroup').get('pass').value,
-                                premiseId,
-                                formControls.clientUsername.value
+                                this.premiseId,
+                                this.clientId
                             ).subscribe((value) => {
                                 console.log(value)
                             })
@@ -200,8 +214,8 @@ export class NewPremiseFormComponent implements OnInit {
                                 entryTypeFormControls.get('fourWheelerGroup').get('valet').value,
                                 entryTypeFormControls.get('fourWheelerGroup').get('registered').value,
                                 entryTypeFormControls.get('fourWheelerGroup').get('pass').value,
-                                premiseId,
-                                formControls.clientUsername.value
+                                this.premiseId,
+                                this.clientId
                             ).subscribe((value) => {
                                 console.log(value)
                             })
@@ -213,8 +227,8 @@ export class NewPremiseFormComponent implements OnInit {
                                 false,
                                 entryTypeFormControls.get('heavyGroup').get('registered').value,
                                 entryTypeFormControls.get('heavyGroup').get('pass').value,
-                                premiseId,
-                                formControls.clientUsername.value
+                                this.premiseId,
+                                this.clientId
                             ).subscribe((value) => {
                                 console.log(value)
                             })
@@ -226,8 +240,8 @@ export class NewPremiseFormComponent implements OnInit {
                                 false,
                                 entryTypeFormControls.get('busGroup').get('registered').value,
                                 entryTypeFormControls.get('busGroup').get('pass').value,
-                                premiseId,
-                                formControls.clientUsername.value
+                                this.premiseId,
+                                this.clientId
                             ).subscribe((value) => {
                                 console.log(value)
                             })
@@ -236,15 +250,15 @@ export class NewPremiseFormComponent implements OnInit {
                     if (formControls.entryTypeTemporary.value === true) {
                         this._premiseConfigService.createTempConfig(
                             formControls.entryTypeTemporaryForm.get('allotedTime').value,
-                            premiseId,
-                            formControls.clientUsername.value
+                            this.premiseId,
+                            this.clientId
                         ).subscribe((value) => {
                             console.log(value)
                         })
                     }
                 }
             })
-
+        this.router.navigate(['configurations', this.clientId, this.premiseId, this.role])
     }
 
 

@@ -5,6 +5,7 @@ import { PremiseService } from '../premise.service';
 import { UserService } from '../user.service';
 import { PremiseConfigService } from '../premise-config.service';
 import { RegisteredVehicleService } from '../registered-vehicle.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-registered-vehicle',
@@ -17,6 +18,11 @@ export class RegisteredVehicleComponent implements OnInit {
     clients: {};
     premiseForClient: {};
     premiseConfigs: any;
+
+    clientId;
+    premiseId;
+    role;
+
 
     validationMessages = {
         'clientUsername': {
@@ -49,9 +55,15 @@ export class RegisteredVehicleComponent implements OnInit {
         private _userService: UserService,
         private _premiseService: PremiseService,
         private _premiseConfigService: PremiseConfigService,
-        private _registeredVehicleService: RegisteredVehicleService) { }
+        private _registeredVehicleService: RegisteredVehicleService,
+        private route: ActivatedRoute
+    ) { }
 
     ngOnInit() {
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.registerVehicleForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
@@ -61,20 +73,38 @@ export class RegisteredVehicleComponent implements OnInit {
         })
         console.log(this.clients);
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-                console.log(this.clients)
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                    console.log(this.clients)
+                })
+        }
+
+        if (this.role === 'OWNER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe(premises => this.premiseForClient = premises)
+
+        }
+
+        if (this.role === 'MANAGER' || this.role === 'WORKER') {
+            this._premiseConfigService.getRegularConfigs(this.premiseId)
+            this._premiseConfigService.eventSubject
+                .subscribe((configs) => {
+                    this.premiseConfigs = configs;
+                })
+        }
 
         this.registerVehicleForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log(clientId)
+            this.clientId = clientId;
             this._premiseService.getPremises(clientId)
                 .subscribe(premises => this.premiseForClient = premises)
         });
 
 
         this.registerVehicleForm.controls.premiseName.valueChanges.subscribe((premiseId) => {
+            this.premiseId = premiseId;
             console.log("Printing premiseId: " + premiseId)
             this._premiseConfigService.getRegularConfigs(premiseId)
             this._premiseConfigService.eventSubject
@@ -91,7 +121,7 @@ export class RegisteredVehicleComponent implements OnInit {
     saveRegisteredVehicleData() {
         let formGroup = this.registerVehicleForm.controls;
         console.log(formGroup)
-        this._registeredVehicleService.registerVehicle(formGroup.premiseName.value, formGroup.vehicleType.value, formGroup.ownerName.value, formGroup.vehicleNumber.value)
+        this._registeredVehicleService.registerVehicle(this.premiseId, formGroup.vehicleType.value, formGroup.ownerName.value, formGroup.vehicleNumber.value)
             .subscribe((value) => {
                 console.log(value)
             })

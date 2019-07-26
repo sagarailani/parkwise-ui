@@ -17,14 +17,13 @@ export class UserService {
         return this._http.get(environment.apiBaseUrl + "/user/owners")
     }
 
-    addUser(userData, role): Observable<{}> {
-        console.log(userData)
+    addUser(premiseId, username, password, role): Observable<{}> {
         //mapping
         let dataObj = {
-            'premiseId': userData.premiseName,
+            'premiseId': premiseId,
             'role': role,
-            'username': userData.username,
-            'password': userData.password
+            'username': username,
+            'password': password
         }
         return this._http.post(environment.apiBaseUrl + "/user", dataObj)
     }

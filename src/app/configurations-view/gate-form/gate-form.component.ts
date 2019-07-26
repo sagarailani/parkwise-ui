@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { GateService } from '../gate.service';
 import { UserService } from '../user.service';
 import { PremiseService } from '../premise.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-gate-form',
@@ -13,6 +14,9 @@ export class GateFormComponent implements OnInit {
     gateConfigForm: FormGroup;
     clients: {};
     premiseForClient: any;
+    clientId;
+    premiseId;
+    role;
 
     validationMessages = {
         'clientUsername': {
@@ -36,22 +40,38 @@ export class GateFormComponent implements OnInit {
     constructor(private fb: FormBuilder,
         private _gateService: GateService,
         private _userService: UserService,
-        private _premiseService: PremiseService) { }
+        private _premiseService: PremiseService,
+        private route: ActivatedRoute,
+    ) { }
 
     ngOnInit() {
+
+        this.clientId = this.route.snapshot.paramMap.get('clientId')
+        this.premiseId = this.route.snapshot.paramMap.get('premiseId')
+        this.role = this.route.snapshot.paramMap.get('role')
+
         this.gateConfigForm = this.fb.group({
             clientUsername: ['', Validators.required],
             premiseName: ['', Validators.required],
             gateName: ['', Validators.required],
         })
 
-        this._userService.getClients()
-            .subscribe((clients) => {
-                this.clients = clients;
-            })
+        if (this.role === 'ADMIN') {
+            this._userService.getClients()
+                .subscribe((clients) => {
+                    this.clients = clients;
+                })
+        }
+
+        if (this.role === 'MANAGER') {
+            this._premiseService.getPremises(this.clientId)
+                .subscribe(premises => this.premiseForClient = premises)
+
+        }
 
         this.gateConfigForm.controls.clientUsername.valueChanges.subscribe(clientId => {
             console.log("Printing clientId: " + clientId);
+            this.clientId = clientId;
             this._premiseService.getPremises(clientId)
                 .subscribe(premises => this.premiseForClient = premises)
             // console.log(this.premiseForClient)
@@ -60,10 +80,15 @@ export class GateFormComponent implements OnInit {
         this.gateConfigForm.valueChanges.subscribe((value) => {
             this.logValidationErrors();
         })
+
+        this.gateConfigForm.controls.premiseName.valueChanges
+            .subscribe((premiseId) => {
+                this.premiseId = premiseId
+            })
     }
 
     saveGateConfigData() {
-        this._gateService.addGateForPremise(this.gateConfigForm.controls.premiseName.value, this.gateConfigForm.controls.gateName.value)
+        this._gateService.addGateForPremise(this.premiseId, this.gateConfigForm.controls.gateName.value)
             .subscribe((value) => {
                 console.log(value)
             })

@@ -13,7 +13,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ContentComponent } from './content/content.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TokenInterceptor } from './token.interceptor';
-
+import { SideBarContentComponent } from './side-bar-content/side-bar-content.component';
+import { SidebarModule } from 'ng-sidebar';
 
 @NgModule({
     declarations: [
@@ -21,10 +22,12 @@ import { TokenInterceptor } from './token.interceptor';
         TitleBarComponent,
         NavbarComponent,
         ContentComponent,
+        SideBarContentComponent,
 
     ],
     imports: [
         BrowserModule,
+        SidebarModule.forRoot(),
         HttpClientModule,
         ReactiveFormsModule,
         GateWorkerViewModule,

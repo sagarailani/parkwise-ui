@@ -5,11 +5,11 @@
 
     <form [formGroup]="addPremiseManagerForm" class="form-content" (ngSubmit)="savePremiseManagerData()">
 
-        <div class="form-group">
+        <div class="form-group" *ngIf="role === 'ADMIN'">
             <label>Client Username: </label><br>
             <select class="custom-select col-sm-6" formControlName="clientUsername" (blur)="logValidationErrors()">
-                <option *ngFor="let client of clients" value="{{client.id}}">
-                    {{client.name}}
+                <option *ngFor="let client of clients" value="{{client.clientId}}">
+                    {{client.username}}
                 </option>
             </select>
 

@@ -5,7 +5,7 @@ import { CardContainerComponent } from './card-container/card-container.componen
 
 
 const routes: Routes = [
-    { path: 'gate-worker-view/:clientId/:premiseId/:role', component: CardContainerComponent },
+    { path: 'gate-worker-view/:clientId/:premiseId/:role/:workerId', component: CardContainerComponent },
 ];
 
 @NgModule({

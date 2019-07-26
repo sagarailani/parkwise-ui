@@ -22,18 +22,25 @@ export class EntryTypeCardComponent implements OnInit {
 
     @Input() entryName: string;
     @Input() vehicleTypes: {}[];
+    @Input() premiseId;
+    @Input() clientId;
+    @Input() gateId;
+    @Input() workerId;
+    @Input() tempConfigId;
 
     isShowVehicleTypeEnabled: boolean = false;
-
-
 
     constructor() { }
 
     ngOnInit() {
-        console.log(this.vehicleTypes)
     }
 
     showVehicleType() {
         this.isShowVehicleTypeEnabled = !this.isShowVehicleTypeEnabled;
+        // console.log("entryname " + this.entryName)
+        // console.log("premise id " + this.premiseId)
+        // console.log("client id " + this.clientId)
+        // console.log("gateid " + this.gateId)
+        // console.log("worker id " + this.workerId)
     }
 }
